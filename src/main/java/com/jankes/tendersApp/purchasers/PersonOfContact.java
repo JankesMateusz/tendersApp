@@ -3,7 +3,7 @@ package com.jankes.tendersApp.purchasers;
 import javax.persistence.Embeddable;
 
 @Embeddable
-public class PersonOfContact {
+class PersonOfContact {
 
     private String firstName;
     private String lastName;
