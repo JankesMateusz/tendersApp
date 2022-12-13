@@ -1,4 +1,10 @@
 package com.jankes.tendersApp.tenders;
 
-interface TenderRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+interface TenderRepository extends JpaRepository<Tender, Long> {
+
+    List<Tender> findAllByPurchaserId(Long id);
 }

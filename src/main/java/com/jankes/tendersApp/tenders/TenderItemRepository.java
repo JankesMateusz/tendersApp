@@ -1,4 +1,7 @@
 package com.jankes.tendersApp.tenders;
 
-public enum TenderItemRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+interface TenderItemRepository extends JpaRepository<TenderItem, Long> {
+
 }
