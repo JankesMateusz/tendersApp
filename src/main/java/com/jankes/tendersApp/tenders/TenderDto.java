@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-class TenderDto {
+public class TenderDto {
 
     private final long id;
     private final PurchaserDto purchaser;
@@ -30,6 +30,10 @@ class TenderDto {
 
     public long getId() {
         return id;
+    }
+
+    public PurchaserDto getPurchaser(){
+        return purchaser;
     }
 
     public Date getPublicationDate() {

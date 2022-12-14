@@ -8,6 +8,7 @@ class TenderItemDto {
     private int cpuQuantity;
     private String os;
     private String office;
+    private String remarks;
     private int taskNumber;
 
     public TenderItemDto(TenderItem item){
@@ -17,6 +18,7 @@ class TenderItemDto {
         this.cpuQuantity = item.getCpuQuantity();
         this.os = item.getOs();
         this.office = item.getOffice();
+        this.remarks = item.getRemarks();
         this.taskNumber = item.getTaskNumber();
     }
 
@@ -42,6 +44,10 @@ class TenderItemDto {
 
     public String getOffice() {
         return office;
+    }
+
+    public String getRemarks(){
+        return remarks;
     }
 
     public int getTaskNumber() {

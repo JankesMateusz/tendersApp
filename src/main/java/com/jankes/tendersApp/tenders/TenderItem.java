@@ -9,13 +9,14 @@ class TenderItem extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "tender_id")
-    protected Tender tender;
-    protected ItemCategory category;
-    protected Integer quantity;
-    protected Integer cpuQuantity;
-    protected String os;
-    protected String office;
-    protected Integer taskNumber;
+    private Tender tender;
+    private ItemCategory category;
+    private Integer quantity;
+    private Integer cpuQuantity;
+    private String os;
+    private String office;
+    private String remarks;
+    private Integer taskNumber;
 
     public TenderItem(){}
 
@@ -67,11 +68,28 @@ class TenderItem extends BaseEntity {
         this.office = office;
     }
 
+    public String getRemarks(){
+        return remarks;
+    }
+
+    public void setRemarks(String remarks){
+        this.remarks = remarks;
+    }
+
     public Integer getTaskNumber() {
         return taskNumber;
     }
 
     public void setTaskNumber(Integer taskNumber) {
         this.taskNumber = taskNumber;
+    }
+    void updateItemFromDto(TenderItemDto dto){
+        this.category = dto.getCategory();
+        this.quantity = dto.getQuantity();
+        this.cpuQuantity = dto.getCpuQuantity();
+        this.os = dto.getOs();
+        this.office = dto.getOffice();
+        this.remarks = dto.getRemarks();
+        this.taskNumber = dto.getTaskNumber();
     }
 }

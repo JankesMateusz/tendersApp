@@ -9,6 +9,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.util.Date;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 public class Tender extends BaseEntity {
@@ -32,6 +33,10 @@ public class Tender extends BaseEntity {
         this.bidDate = bidDate;
         this.link = link;
         this.tenderItems = tenderItems;
+    }
+
+    void setId(Long id){
+        this.id = id;
     }
     Purchaser getPurchaser() {
         return purchaser;
@@ -86,6 +91,16 @@ public class Tender extends BaseEntity {
             return;
         }
         tenderItems.remove(item);
-        //item.setTender(null)?
+        item.setTender(null);
     }
+
+//    void updateTenderFromDto(TenderDto dto){
+//        this.publicationDate = dto.getPublicationDate();
+//        this.bidDate = dto.getBidDate();
+//        this.link = dto.getLink();
+//        this.tenderItems = dto.getTenderItems()
+//                .stream()
+//                .map(itemDto -> new )
+//                .collect(Collectors.toSet());
+//    }
 }
