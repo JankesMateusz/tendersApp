@@ -20,6 +20,21 @@ class TenderItem extends BaseEntity {
 
     public TenderItem(){}
 
+    public TenderItem(Tender tender, ItemCategory category, Integer quantity, Integer cpuQuantity, String os, String office, String remarks, Integer taskNumber) {
+        this.tender = tender;
+        this.category = category;
+        this.quantity = quantity;
+        this.cpuQuantity = cpuQuantity;
+        this.os = os;
+        this.office = office;
+        this.remarks = remarks;
+        this.taskNumber = taskNumber;
+    }
+
+    public void setId(Long id){
+        this.id = id;
+    }
+
     public Tender getTender() {
         return tender;
     }

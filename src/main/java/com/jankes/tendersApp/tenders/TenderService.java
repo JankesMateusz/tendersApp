@@ -10,10 +10,12 @@ public class TenderService {
 
     private final TenderRepository tenderRepository;
     private final TenderItemRepository tenderItemRepository;
+    private final TenderFactory tenderFactory;
 
-    public TenderService(TenderRepository tenderRepository, TenderItemRepository tenderItemRepository){
+    public TenderService(TenderRepository tenderRepository, TenderItemRepository tenderItemRepository, TenderFactory tenderFactory){
         this.tenderRepository = tenderRepository;
         this.tenderItemRepository = tenderItemRepository;
+        this.tenderFactory = tenderFactory;
     }
 
 
