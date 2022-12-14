@@ -94,13 +94,7 @@ public class Tender extends BaseEntity {
         item.setTender(null);
     }
 
-//    void updateTenderFromDto(TenderDto dto){
-//        this.publicationDate = dto.getPublicationDate();
-//        this.bidDate = dto.getBidDate();
-//        this.link = dto.getLink();
-//        this.tenderItems = dto.getTenderItems()
-//                .stream()
-//                .map(itemDto -> new )
-//                .collect(Collectors.toSet());
-//    }
+    TenderDto toDto() {
+        return new TenderDto(this);
+    }
 }

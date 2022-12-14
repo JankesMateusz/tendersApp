@@ -33,14 +33,16 @@ public class TenderService {
     }
 
     //TODO tender status? status update?
-//    public TenderDto saveTender(TenderDto toSave){
-//        return tenderRepository.findById(toSave.getId())
-//                .map()
-//    }
+    TenderDto saveTender(TenderDto dtoToSave){
+        var toSave = tenderFactory.from(dtoToSave);
+        if(tenderRepository.findById(toSave.getId()).isPresent()){
+            return updateTender(toSave).toDto();
+        }
+        return tenderRepository.save(toSave).toDto();
+    }
 
-    List<TenderItemDto> updateTenderItems(){
-
-        return null;
+    Tender updateTender(Tender toSave){
+        return null; //TODO
     }
 
 }

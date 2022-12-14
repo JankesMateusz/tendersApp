@@ -27,7 +27,8 @@ class TenderFactory {
                     sourceItem.getOs(),
                     sourceItem.getOffice(),
                     sourceItem.getRemarks(),
-                    sourceItem.getTaskNumber());
+                    sourceItem.getTaskNumber()
+            );
             item.setId(source.getId());
             result.addTenderItem(item);
         });
