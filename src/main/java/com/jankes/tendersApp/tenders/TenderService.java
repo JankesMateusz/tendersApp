@@ -35,7 +35,7 @@ public class TenderService {
     //TODO tender status? status update?
     TenderDto saveTender(TenderDto dtoToSave){
         var toSave = tenderFactory.from(dtoToSave);
-        if(tenderRepository.findById(toSave.getId()).isPresent()){
+        if(tenderRepository.existsById(toSave.getId())){
             return updateTender(toSave).toDto();
         }
         return tenderRepository.save(toSave).toDto();
