@@ -4,6 +4,7 @@ import com.jankes.tendersApp.purchasers.Purchaser;
 import jdk.jfr.Description;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
@@ -36,7 +37,7 @@ public class TenderServiceTest {
     //TODO test z repoInMemory?
     @Test
     @Description("hhh")
-    public void findSingleTenderThrowsException(){
+    public void findSingleTenderThrowsException() {
 
         //given
         var repository = mock(TenderRepository.class);
@@ -51,4 +52,8 @@ public class TenderServiceTest {
     }
 
 
+    private TenderRepository inMemoryTenderRepository() {
+
+        return null;
+    }
 }
