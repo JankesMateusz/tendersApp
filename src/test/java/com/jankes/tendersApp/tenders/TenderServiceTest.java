@@ -1,10 +1,13 @@
 package com.jankes.tendersApp.tenders;
 
 import com.jankes.tendersApp.purchasers.Purchaser;
+import com.jankes.tendersApp.purchasers.PurchaserDto;
 import jdk.jfr.Description;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
@@ -13,7 +16,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class TenderServiceTest {
-
 
     @Test
     @Description("Should return tender if it does exist in repository")
@@ -51,9 +53,70 @@ public class TenderServiceTest {
         assertThat(t).isInstanceOf(IllegalStateException.class);
     }
 
+    @Test
+    public void saveNewTenderToRepository() {
+        //given
+        InMemoryTenderRepository tenderRepository = inMemoryTenderRepository();
+        int countBeforeTest = tenderRepository.count();
+        //and
+        var tenderFactoryMock = mock(TenderFactory.class);
+        //and
+        var tenderItemRepositoryMock = mock(TenderItemRepository.class);
+        //and
+        var tenderDto = mock(TenderDto.class);
+        //and
+        var tender = mock(Tender.class);
+        //and
+        when(tender.toDto()).thenReturn(tenderDto);
+        when(tenderFactoryMock.from(tenderDto)).thenReturn(tender);
+        //system under test:
+        var toTest = new TenderService(tenderRepository, tenderItemRepositoryMock, tenderFactoryMock);
+        //when
+        var result = toTest.saveTender(tenderDto);
+        //test
+        assertThat(countBeforeTest).isNotEqualTo(tenderRepository.count());
+    }
 
-    private TenderRepository inMemoryTenderRepository() {
+    private InMemoryTenderRepository inMemoryTenderRepository() {
+        return new InMemoryTenderRepository();
+    }
 
-        return null;
+    private static class InMemoryTenderRepository implements TenderRepository {
+        private long index = 0;
+        private Map<Long, Tender> map = new HashMap<>();
+
+        public int count() {
+            return map.values().size();
+        }
+
+        @Override
+        public List<Tender> findAllByPurchaserId(Long id) {
+            return null;
+        }
+
+        @Override
+        public boolean existsById(Long id) {
+            return false;
+        }
+
+        @Override
+        public Tender save(Tender entity) {
+            if (entity.getId() == 0) {
+                try {
+                    var field = Tender.class.getDeclaredField("id");
+                    field.setAccessible(true);
+                    field.set(entity, ++index);
+                } catch (NoSuchFieldException | IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            map.put(entity.getId(), entity);
+            return entity;
+        }
+
+        @Override
+        public Optional<Tender> findById(Long id) {
+            return Optional.ofNullable(map.get(id));
+        }
     }
 }

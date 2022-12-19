@@ -3,17 +3,17 @@ package com.jankes.tendersApp.tenders;
 import com.jankes.tendersApp.common.BaseEntity;
 import com.jankes.tendersApp.purchasers.Purchaser;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
-public class Tender extends BaseEntity {
+public class Tender{
 
+    @Id
+    @GeneratedValue
+    private Long id;
     @ManyToOne
     @JoinColumn(name = "purchaser_id")
     private Purchaser purchaser;
@@ -37,6 +37,10 @@ public class Tender extends BaseEntity {
 
     void setId(Long id){
         this.id = id;
+    }
+
+    Long getId(){
+        return this.id;
     }
     Purchaser getPurchaser() {
         return purchaser;
