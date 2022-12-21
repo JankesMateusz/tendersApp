@@ -42,6 +42,7 @@ public class Tender{
     Long getId(){
         return this.id;
     }
+
     Purchaser getPurchaser() {
         return purchaser;
     }
@@ -84,6 +85,10 @@ public class Tender{
 
     Set<TenderItem> getTenderItems() {
         return tenderItems;
+    }
+
+    void setTenderItems(Set<TenderItem> tenderItems) {
+        this.tenderItems = tenderItems;
     }
 
     void addTenderItem(TenderItem item){

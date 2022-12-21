@@ -58,8 +58,8 @@ public class TenderService {
                                     overrideItem -> {
                                         existingItem.setCategory(overrideItem.getCategory());
                                         existingItem.setQuantity(overrideItem.getQuantity());
-                                        existingItem.setOs(overrideItem.getOs()); //TODO: to consider
-                                        existingItem.setOffice(overrideItem.getOffice()); // TODO: to consider
+                                        existingItem.setOs(overrideItem.getOs());
+                                        existingItem.setOffice(overrideItem.getOffice());
                                         existingItem.setRemarks(overrideItem.getRemarks());
                                         existingItem.setTaskNumber(overrideItem.getTaskNumber());
                                     },

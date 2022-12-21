@@ -2,9 +2,11 @@ package com.jankes.tendersApp.tenders;
 
 import com.jankes.tendersApp.common.BaseEntity;
 
+import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+@Entity
 class TenderItem extends BaseEntity {
 
     @ManyToOne
@@ -97,14 +99,5 @@ class TenderItem extends BaseEntity {
 
     public void setTaskNumber(Integer taskNumber) {
         this.taskNumber = taskNumber;
-    }
-    void updateItemFromDto(TenderItemDto dto){
-        this.category = dto.getCategory();
-        this.quantity = dto.getQuantity();
-        this.cpuQuantity = dto.getCpuQuantity();
-        this.os = dto.getOs();
-        this.office = dto.getOffice();
-        this.remarks = dto.getRemarks();
-        this.taskNumber = dto.getTaskNumber();
     }
 }

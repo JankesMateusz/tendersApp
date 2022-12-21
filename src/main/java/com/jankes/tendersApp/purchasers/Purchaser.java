@@ -7,8 +7,11 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-public class Purchaser extends BaseEntity {
+public class Purchaser {
 
+    @Id
+    @GeneratedValue
+    private Long id;
     private String officialName;
     private String city;
     private String province;
@@ -25,6 +28,14 @@ public class Purchaser extends BaseEntity {
     Set<Tender> tenders;
 
     public Purchaser(){}
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getOfficialName() {
         return officialName;

@@ -1,14 +1,12 @@
 package com.jankes.tendersApp.tenders;
 
 import com.jankes.tendersApp.purchasers.Purchaser;
-import com.jankes.tendersApp.purchasers.PurchaserDto;
+import com.jankes.tendersApp.purchasers.PurchaserService;
 import jdk.jfr.Description;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -36,14 +34,12 @@ public class TenderServiceTest {
         assertThat(result).isInstanceOf(TenderDto.class);
     }
 
-    //TODO test z repoInMemory?
     @Test
-    @Description("hhh")
+    @Description("Should throw exception when finds no tender")
     public void findSingleTenderThrowsException() {
 
-        //given
-        var repository = mock(TenderRepository.class);
-        when(repository.findById(anyLong())).thenThrow(IllegalStateException.class);
+        //given (empty repository)
+        var repository = inMemoryTenderRepository();
 
         // system
         var service = new TenderService(repository, null, null);
@@ -54,6 +50,7 @@ public class TenderServiceTest {
     }
 
     @Test
+    @Description("Should save new tender to repository")
     public void saveNewTenderToRepository() {
         //given
         InMemoryTenderRepository tenderRepository = inMemoryTenderRepository();
@@ -72,9 +69,67 @@ public class TenderServiceTest {
         //system under test:
         var toTest = new TenderService(tenderRepository, tenderItemRepositoryMock, tenderFactoryMock);
         //when
-        var result = toTest.saveTender(tenderDto);
+        toTest.saveTender(tenderDto);
         //test
         assertThat(countBeforeTest).isNotEqualTo(tenderRepository.count());
+    }
+
+    @Test
+    @Description("Should update existing tender")
+    public void updateTenderWithoutItemsToRemoveOrUpdate() throws Exception{
+        //given
+        InMemoryTenderRepository tenderRepository = inMemoryTenderRepository();
+        //and
+        Set<TenderItem> items = new HashSet<>();
+        var tender = tenderWith(1, "test", "www.test.pl", "2022-12-01", "2022-12-10", items);
+        //and
+        tenderRepository.save(tender);
+        int countBeforeTest = tenderRepository.count();
+        //and
+        var factory = mock(TenderFactory.class);
+        //updated tender
+        var updatedTender = tenderWith(1, "test 2", "www.test2.pl", "2022-12-01", "2022-12-10", items);
+        var dto = updatedTender.toDto();
+        when(factory.from(dto)).thenReturn(updatedTender);
+        //system under test
+        var service = new TenderService(tenderRepository,null, factory);
+        //when
+        service.saveTender(dto);
+        //assert
+        assertThat(service.findSingleTender(1L).getTitle()).isEqualTo("test 2");
+        assertThat(service.findSingleTender(1L).getLink()).isEqualTo("www.test2.pl");
+        assertThat(countBeforeTest).isEqualTo(tenderRepository.count());
+    }
+
+    @Test
+    @Description("Should update tender and remove one tender item")
+    public void updateTenderAndRemoveItemFromTenderItems() throws Exception{
+        //given
+        InMemoryTenderRepository tenderRepository = inMemoryTenderRepository();
+        //and
+        Set<TenderItem> items = new HashSet<>();
+        var tender = tenderWith(1, "test", "www.test.pl", "2022-12-01", "2022-12-10", items);
+        tender.addTenderItem(tenderItemWith(1L, tender, ItemCategory.NOTEBOOK, 5));
+        tender.addTenderItem(tenderItemWith(2L, tender, ItemCategory.AIO, 10));
+        //and
+        tenderRepository.save(tender);
+        int countBeforeTest = tenderRepository.count();
+        //and
+        var factory = mock(TenderFactory.class);
+        //and
+        var itemRepository = inMemoryTenderItemRepository();
+        //updated tender
+        var updatedTender = tenderWith(1, "test 2", "www.test2.pl", "2022-12-01", "2022-12-10", items);
+        updatedTender.addTenderItem(tenderItemWith(1L, tender, ItemCategory.NOTEBOOK, 5));
+        var dto = updatedTender.toDto();
+        when(factory.from(dto)).thenReturn(updatedTender);
+        //system under test
+        var service = new TenderService(tenderRepository, itemRepository, factory);
+        //when
+        var result = service.saveTender(dto);
+        //assert
+        assertThat(countBeforeTest).isEqualTo(tenderRepository.count());
+        result.getTenderItems().forEach(t -> System.out.println(t.getId() + " " + t.getCategory() + " " + t.getQuantity()));
     }
 
     private InMemoryTenderRepository inMemoryTenderRepository() {
@@ -118,5 +173,64 @@ public class TenderServiceTest {
         public Optional<Tender> findById(Long id) {
             return Optional.ofNullable(map.get(id));
         }
+    }
+
+    private InMemoryTenderItemRepository inMemoryTenderItemRepository() {return new InMemoryTenderItemRepository();}
+
+    private static class InMemoryTenderItemRepository implements TenderItemRepository {
+
+        private long index = 0;
+        private Map<Long, TenderItem> map = new HashMap<>();
+        @Override
+        public Optional<TenderItem> findById(Long id) {
+            return Optional.ofNullable(map.get(id));
+        }
+
+        @Override
+        public TenderItem save(TenderItem entity) {
+            if (entity.getId() == 0) {
+                try {
+                    var field = Tender.class.getDeclaredField("id");
+                    field.setAccessible(true);
+                    field.set(entity, ++index);
+                } catch (NoSuchFieldException | IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            map.put(entity.getId(), entity);
+            return entity;
+        }
+
+        @Override
+        public void delete(TenderItem toRemove) {
+            map.remove(toRemove.getId());
+        }
+    }
+
+    private Tender tenderWith(long id, String title, String link, String publicationDate, String bidDate, Set<TenderItem> items) throws Exception{
+
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyy");
+
+        var tenderForTest = new Tender();
+        tenderForTest.setId(id);
+        tenderForTest.setTitle(title);
+        tenderForTest.setLink(link);
+        tenderForTest.setPublicationDate(format.parse(publicationDate));
+        tenderForTest.setBidDate(format.parse(bidDate));
+        tenderForTest.setTenderItems(items);
+
+        return tenderForTest;
+    }
+
+    private TenderItem tenderItemWith(long id, Tender tender, ItemCategory category, int quantity){
+
+        var item = new TenderItem();
+
+        item.setId(id);
+        item.setTender(tender);
+        item.setCategory(category);
+        item.setQuantity(quantity);
+
+        return item;
     }
 }
