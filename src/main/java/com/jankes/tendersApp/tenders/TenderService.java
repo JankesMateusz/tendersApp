@@ -80,7 +80,7 @@ public class TenderService {
         }).orElseGet(() -> {
             toSave.getTenderItems().forEach(item -> {
                 if(item.getTender() == null){
-                    item.setTender(toSave);                      //TODO: czy to ma sens?
+                    item.setTender(toSave);
                 }
             });
             return tenderRepository.save(toSave);

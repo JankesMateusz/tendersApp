@@ -108,10 +108,10 @@ public class TenderServiceTest {
         InMemoryTenderRepository tenderRepository = inMemoryTenderRepository();
         //and
         Set<TenderItem> items = new HashSet<>();
+        Set<TenderItem> itemsForUpdate = new HashSet<>();
+        items.add(tenderItemWith(1L, ItemCategory.NOTEBOOK, 5));
+        items.add(tenderItemWith(2L, ItemCategory.AIO, 10));
         var tender = tenderWith(1, "test", "www.test.pl", "2022-12-01", "2022-12-10", items);
-        tender.addTenderItem(tenderItemWith(1L, tender, ItemCategory.NOTEBOOK, 5));
-        tender.addTenderItem(tenderItemWith(2L, tender, ItemCategory.AIO, 10));
-        //and
         tenderRepository.save(tender);
         int countBeforeTest = tenderRepository.count();
         //and
@@ -119,17 +119,18 @@ public class TenderServiceTest {
         //and
         var itemRepository = inMemoryTenderItemRepository();
         //updated tender
-        var updatedTender = tenderWith(1, "test 2", "www.test2.pl", "2022-12-01", "2022-12-10", items);
-        updatedTender.addTenderItem(tenderItemWith(1L, tender, ItemCategory.NOTEBOOK, 5));
-        var dto = updatedTender.toDto();
-        when(factory.from(dto)).thenReturn(updatedTender);
+        itemsForUpdate.add(tenderItemWith(1L, ItemCategory.NOTEBOOK, 5));
+        var updatedTender = tenderWith(1, "test 2", "www.test2.pl", "2022-12-01", "2022-12-10", itemsForUpdate);
+        var updatedTenderDto = updatedTender.toDto();
+        when(factory.from(updatedTenderDto)).thenReturn(updatedTender);
         //system under test
         var service = new TenderService(tenderRepository, itemRepository, factory);
         //when
-        var result = service.saveTender(dto);
+        service.saveTender(updatedTenderDto);
+        var result = service.saveTender(updatedTenderDto);
         //assert
         assertThat(countBeforeTest).isEqualTo(tenderRepository.count());
-        result.getTenderItems().forEach(t -> System.out.println(t.getId() + " " + t.getCategory() + " " + t.getQuantity()));
+        assertThat(service.findSingleTender(1L).getTenderItems().size()).isEqualTo(1);
     }
 
     private InMemoryTenderRepository inMemoryTenderRepository() {
@@ -222,12 +223,11 @@ public class TenderServiceTest {
         return tenderForTest;
     }
 
-    private TenderItem tenderItemWith(long id, Tender tender, ItemCategory category, int quantity){
+    private TenderItem tenderItemWith(long id, ItemCategory category, int quantity){
 
         var item = new TenderItem();
 
         item.setId(id);
-        item.setTender(tender);
         item.setCategory(category);
         item.setQuantity(quantity);
 
