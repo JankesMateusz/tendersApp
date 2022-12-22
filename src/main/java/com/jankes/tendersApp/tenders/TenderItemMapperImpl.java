@@ -20,6 +20,15 @@ class TenderItemMapperImpl implements TenderItemMapper{
 
     @Override
     public TenderItem toEntity(TenderItemDto dto) {
-        return null;
+        var item = new TenderItem();
+        item.setId(dto.getId());
+        item.setCategory(ItemCategory.valueOf(dto.getCategory()));
+        item.setQuantity(dto.getQuantity());
+        item.setOs(item.getOs());
+        item.setOffice(item.getOffice());
+        item.setRemarks(item.getRemarks());
+        item.setTaskNumber(item.getTaskNumber());
+
+        return item;
     }
 }
