@@ -18,15 +18,7 @@ class TenderFactory {
         result.setBidDate(source.getBidDate());
         result.setLink(source.getLink());
         source.getTenderItems().forEach(sourceItem -> {
-            var item = new TenderItem(result, ItemCategory.valueOf(sourceItem.getCategory()),
-                    sourceItem.getQuantity(),
-                    sourceItem.getCpuQuantity(),
-                    sourceItem.getOs(),
-                    sourceItem.getOffice(),
-                    sourceItem.getRemarks(),
-                    sourceItem.getTaskNumber()
-            );
-            item.setId(source.getId());
+            var item = new TenderItemMapperImpl().toEntity(sourceItem);
             result.addTenderItem(item);
         });
         return result;
