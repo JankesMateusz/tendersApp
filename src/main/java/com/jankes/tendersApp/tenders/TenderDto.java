@@ -24,10 +24,7 @@ public class TenderDto {
         this.title = tender.getTitle();
         this.tenderItems = tender.getTenderItems()
                 .stream()
-                .map(item -> {
-                    TenderItemMapper mapper = new TenderItemMapperImpl();
-                    return mapper.toDto(item);
-                })
+                .map(item -> new TenderItemMapperImpl().toDto(item))
                 .collect(Collectors
                         .toList());
     }

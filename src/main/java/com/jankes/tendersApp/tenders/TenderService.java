@@ -43,7 +43,7 @@ public class TenderService {
         return tenderRepository.save(toSave).toDto();
     }
 
-    Tender updateTender(Tender toSave){
+    private Tender updateTender(Tender toSave){
         return tenderRepository.findById(toSave.getId()).map(existingTender -> {
             Set<TenderItem> itemsToRemove = new HashSet<>();
             existingTender.setLink(toSave.getLink());
