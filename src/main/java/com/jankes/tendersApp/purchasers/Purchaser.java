@@ -7,8 +7,11 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-public class Purchaser extends BaseEntity {
+public class Purchaser {
 
+    @Id
+    @GeneratedValue
+    private Long id;
     private String officialName;
     private String city;
     private String province;
@@ -17,14 +20,22 @@ public class Purchaser extends BaseEntity {
     private TypeOfAccount typeOfAccount;
     private String address;
     private String zipCode;
-    @Embedded
-    private PersonOfContact personOfContact;
+    private String personOfContactFirstName;
+    private String personOfContactLastName;
     private String email; //TODO validation
-    private String phoneNumber; //TODO validation
+    private String phoneNumber; //TODO validation?
     @OneToMany(mappedBy = "purchaser")
     Set<Tender> tenders;
 
     public Purchaser(){}
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getOfficialName() {
         return officialName;
@@ -74,12 +85,20 @@ public class Purchaser extends BaseEntity {
         this.zipCode = zipCode;
     }
 
-    public PersonOfContact getPersonOfContact() {
-        return personOfContact;
+    public String getPersonOfContactFirstName() {
+        return personOfContactFirstName;
     }
 
-    public void setPersonOfContact(PersonOfContact personOfContact) {
-        this.personOfContact = personOfContact;
+    public void setPersonOfContactFirstName(String personOfContactFirstName) {
+        this.personOfContactFirstName = personOfContactFirstName;
+    }
+
+    public String getPersonOfContactLastName() {
+        return personOfContactLastName;
+    }
+
+    public void setPersonOfContactLastName(String personOfContactLastName) {
+        this.personOfContactLastName = personOfContactLastName;
     }
 
     public String getEmail() {

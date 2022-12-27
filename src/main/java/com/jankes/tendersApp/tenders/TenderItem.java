@@ -2,22 +2,40 @@ package com.jankes.tendersApp.tenders;
 
 import com.jankes.tendersApp.common.BaseEntity;
 
+import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+@Entity
 class TenderItem extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "tender_id")
-    protected Tender tender;
-    protected ItemCategory category;
-    protected Integer quantity;
-    protected Integer cpuQuantity;
-    protected String os;
-    protected String office;
-    protected Integer taskNumber;
+    private Tender tender;
+    private ItemCategory category;
+    private Integer quantity;
+    private Integer cpuQuantity;
+    private String os;
+    private String office;
+    private String remarks;
+    private Integer taskNumber;
 
     public TenderItem(){}
+
+    public TenderItem(Tender tender, ItemCategory category, Integer quantity, Integer cpuQuantity, String os, String office, String remarks, Integer taskNumber) {
+        this.tender = tender;
+        this.category = category;
+        this.quantity = quantity;
+        this.cpuQuantity = cpuQuantity;
+        this.os = os;
+        this.office = office;
+        this.remarks = remarks;
+        this.taskNumber = taskNumber;
+    }
+
+    public void setId(Long id){
+        this.id = id;
+    }
 
     public Tender getTender() {
         return tender;
@@ -65,6 +83,14 @@ class TenderItem extends BaseEntity {
 
     public void setOffice(String office) {
         this.office = office;
+    }
+
+    public String getRemarks(){
+        return remarks;
+    }
+
+    public void setRemarks(String remarks){
+        this.remarks = remarks;
     }
 
     public Integer getTaskNumber() {

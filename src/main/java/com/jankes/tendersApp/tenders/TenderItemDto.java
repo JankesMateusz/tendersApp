@@ -3,28 +3,34 @@ package com.jankes.tendersApp.tenders;
 class TenderItemDto {
 
     private final long id;
-    private ItemCategory category;
+    private String category;
     private int quantity;
     private int cpuQuantity;
     private String os;
     private String office;
+    private String remarks;
     private int taskNumber;
 
-    public TenderItemDto(TenderItem item){
-        this.id = item.getId();
-        this.category = item.getCategory();
-        this.quantity = item.getQuantity();
-        this.cpuQuantity = item.getCpuQuantity();
-        this.os = item.getOs();
-        this.office = item.getOffice();
-        this.taskNumber = item.getTaskNumber();
+    public static Builder builder(){
+        return new Builder();
+    }
+
+    private TenderItemDto(Builder builder){
+        this.id = builder.id;
+        this.category = builder.category;
+        this.quantity = builder.quantity;
+        this.cpuQuantity = builder.cpuQuantity;
+        this.os = builder.os;
+        this.office = builder.office;
+        this.remarks = builder.remarks;
+        this.taskNumber = builder.taskNumber;
     }
 
     public long getId() {
         return id;
     }
 
-    public ItemCategory getCategory() {
+    public String getCategory() {
         return category;
     }
 
@@ -44,7 +50,66 @@ class TenderItemDto {
         return office;
     }
 
+    public String getRemarks() {
+        return remarks;
+    }
+
     public int getTaskNumber() {
         return taskNumber;
+    }
+
+    public static class Builder{
+        private long id;
+        private String category;
+        private int quantity;
+        private int cpuQuantity;
+        private String os;
+        private String office;
+        private String remarks;
+        private int taskNumber;
+
+        public Builder withId(long id){
+            this.id = id;
+            return this;
+        }
+
+        public Builder withCategory(String category){
+            this.category = category;
+            return this;
+        }
+
+        public Builder withQuantity(int quantity){
+            this.quantity = quantity;
+            return this;
+        }
+
+        public Builder withCpuQuantity(int cpuQuantity){
+            this.cpuQuantity = cpuQuantity;
+            return this;
+        }
+
+        public Builder withOs(String os){
+            this.os = os;
+            return this;
+        }
+
+        public Builder withOffice(String office){
+            this.office = office;
+            return this;
+        }
+
+        public Builder withRemarks(String remarks){
+            this.remarks = remarks;
+            return this;
+        }
+
+        public Builder withTaskNumber(int number){
+            this.taskNumber = number;
+            return this;
+        }
+
+        public TenderItemDto build(){
+            return new TenderItemDto(this);
+        }
     }
 }

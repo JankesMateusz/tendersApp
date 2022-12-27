@@ -1,7 +1,15 @@
 package com.jankes.tendersApp.tenders;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-interface TenderItemRepository extends JpaRepository<TenderItem, Long> {
+import java.util.Optional;
 
+interface TenderItemRepository {
+
+    Optional<TenderItem> findById(Long id);
+
+    TenderItem save(TenderItem entity);
+
+
+    void delete(TenderItem toRemove);
 }

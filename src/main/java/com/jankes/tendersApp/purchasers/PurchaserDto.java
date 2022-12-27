@@ -23,8 +23,8 @@ public class PurchaserDto {
         this.typeOfAccount = purchaser.getTypeOfAccount();
         this.address = purchaser.getAddress();
         this.zipCode = purchaser.getZipCode();
-        this.personOfContactFirstName = purchaser.getPersonOfContact().getFirstName();
-        this.personOfContactLastName = purchaser.getPersonOfContact().getLastName();
+        this.personOfContactFirstName = purchaser.getPersonOfContactFirstName();
+        this.personOfContactLastName = purchaser.getPersonOfContactFirstName();
         this.phone = purchaser.getPhoneNumber();
         this.email = purchaser.getEmail();
     }
