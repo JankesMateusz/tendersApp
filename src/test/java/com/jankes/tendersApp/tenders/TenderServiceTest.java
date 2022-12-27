@@ -40,10 +40,8 @@ public class TenderServiceTest {
 
         //given (empty repository)
         var repository = inMemoryTenderRepository();
-
         // system
         var service = new TenderService(repository, null, null);
-
         // assert
         Throwable t = catchThrowable(() -> service.findSingleTender(1L));
         assertThat(t).isInstanceOf(IllegalStateException.class);
