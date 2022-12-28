@@ -1,7 +1,5 @@
 package com.jankes.tendersApp.tenders;
 
-import com.jankes.tendersApp.purchasers.PurchaserDto;
-
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,7 +22,7 @@ public class TenderDto {
         this.title = tender.getTitle();
         this.tenderItems = tender.getTenderItems()
                 .stream()
-                .map(item -> new TenderItemMapperImpl().toDto(item))
+                .map(item -> new TenderItemMapper().toDto(item))
                 .collect(Collectors
                         .toList());
     }

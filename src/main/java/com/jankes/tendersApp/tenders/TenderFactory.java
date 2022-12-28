@@ -1,9 +1,6 @@
 package com.jankes.tendersApp.tenders;
 
-import com.jankes.tendersApp.purchasers.PurchaserService;
 import org.springframework.stereotype.Service;
-
-import java.util.stream.Collectors;
 
 @Service
 class TenderFactory {
@@ -18,7 +15,7 @@ class TenderFactory {
         result.setBidDate(source.getBidDate());
         result.setLink(source.getLink());
         source.getTenderItems().forEach(sourceItem -> {
-            var item = new TenderItemMapperImpl().toEntity(sourceItem);
+            var item = new TenderItemMapper().toEntity(sourceItem);
             result.addTenderItem(item);
         });
         return result;
