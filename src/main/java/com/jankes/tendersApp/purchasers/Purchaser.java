@@ -1,12 +1,11 @@
 package com.jankes.tendersApp.purchasers;
 
-import com.jankes.tendersApp.common.BaseEntity;
 import com.jankes.tendersApp.tenders.Tender;
 
 import javax.persistence.*;
 import java.util.Set;
 
-@Entity
+@Entity(name = "purchasers")
 public class Purchaser {
 
     @Id
