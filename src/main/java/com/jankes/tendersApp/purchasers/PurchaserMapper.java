@@ -1,9 +1,11 @@
 package com.jankes.tendersApp.purchasers;
 
 import com.jankes.tendersApp.common.DtoMapper;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Service
 public class PurchaserMapper implements DtoMapper<PurchaserDto, Purchaser> {
 
     @Override
@@ -18,7 +20,7 @@ public class PurchaserMapper implements DtoMapper<PurchaserDto, Purchaser> {
                 .withPersonOfContactFirstName(entity.getPersonOfContactFirstName())
                 .withPersonOfContactLastName(entity.getPersonOfContactLastName())
                 .withPhone(entity.getPhoneNumber())
-                .withTypeOfAccount(entity.getTypeOfAccount().name())
+                .withTypeOfAccount(entity.getTypeOfAccount().name().toLowerCase())
                 .withEmail(entity.getEmail())
                 .build();
     }
@@ -35,7 +37,7 @@ public class PurchaserMapper implements DtoMapper<PurchaserDto, Purchaser> {
         result.setPersonOfContactFirstName(dto.getPersonOfContactFirstName());
         result.setPersonOfContactLastName(dto.getPersonOfContactLastName());
         result.setPhoneNumber(dto.getPhone());
-        result.setTypeOfAccount(TypeOfAccount.valueOf(dto.getTypeOfAccount()));
+        result.setTypeOfAccount(TypeOfAccount.valueOf(dto.getTypeOfAccount().toUpperCase()));
         result.setEmail(dto.getEmail());
 
         return result;

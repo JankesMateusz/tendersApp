@@ -2,7 +2,7 @@ package com.jankes.tendersApp.purchasers;
 
 public class PurchaserDto {
 
-    private final Long id;
+    private final long id;
     private final String officialName;
     private final String city;
     private final String province;

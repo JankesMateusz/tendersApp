@@ -1,7 +1,6 @@
 package com.jankes.tendersApp.tenders;
 
 import com.jankes.tendersApp.purchasers.Purchaser;
-import com.jankes.tendersApp.purchasers.PurchaserService;
 import jdk.jfr.Description;
 import org.junit.jupiter.api.Test;
 
@@ -44,7 +43,8 @@ public class TenderServiceTest {
         var service = new TenderService(repository, null, null);
         // assert
         Throwable t = catchThrowable(() -> service.findSingleTender(1L));
-        assertThat(t).isInstanceOf(IllegalStateException.class);
+        assertThat(t).isInstanceOf(Exception.class);
+        assertThat(t.getMessage()).isEqualTo("Tender not found");
     }
 
     @Test
@@ -184,7 +184,8 @@ public class TenderServiceTest {
 
         @Override
         public boolean existsById(Long id) {
-            return false;
+
+            return map.containsKey(id);
         }
 
         @Override

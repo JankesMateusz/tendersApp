@@ -3,7 +3,6 @@ package com.jankes.tendersApp.purchasers;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,7 +20,7 @@ public class PurchaserService {
         return purchaserRepository.findById(id)
                 .map(mapper::toDto)
                 .orElseThrow(
-                        () -> new NoSuchElementException("Purchaser not found"));
+                        () -> new IllegalStateException("Purchaser not found"));
     }
 
     public List<PurchaserDto> findAllPurchasers(){
@@ -32,7 +31,7 @@ public class PurchaserService {
     }
 
     public List<PurchaserDto> findByName(String name){
-        return purchaserRepository.findByNameIgnoreCaseContaining(name)
+        return purchaserRepository.findByOfficialNameIgnoreCaseContaining(name)
                 .stream()
                 .map(mapper::toDto)
                 .collect(Collectors.toList());
@@ -40,7 +39,7 @@ public class PurchaserService {
 
     public PurchaserDto createPurchaser(PurchaserDto toCreate){
         var toSave = mapper.toEntity(toCreate);
-        
+
         if(purchaserRepository.existsById(toCreate.getId())){
             var result = updatePurchaser(toSave);
             return mapper.toDto(result);
@@ -63,9 +62,11 @@ public class PurchaserService {
                     existingPurchaser.setPhoneNumber(toUpdate.getPhoneNumber());
                     existingPurchaser.setZipCode(toUpdate.getZipCode());
                     existingPurchaser.setTypeOfAccount(toUpdate.getTypeOfAccount());
+
+                    purchaserRepository.save(existingPurchaser);
                     return existingPurchaser;
                 }).orElseThrow(() -> {
-                    throw new IllegalStateException("No such purchaser found"); //TODO: not sure?
+                    throw new IllegalStateException("Purchaser not found");
                 });
     }
 }

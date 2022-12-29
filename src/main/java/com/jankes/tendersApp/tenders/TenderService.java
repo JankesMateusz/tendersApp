@@ -24,7 +24,8 @@ public class TenderService {
     public TenderDto findSingleTender(Long id){
         return tenderRepository.findById(id)
                 .map(TenderDto::new)
-                .orElseThrow(() -> new IllegalStateException("Tender not found"));
+                .orElseThrow(
+                        () -> new IllegalStateException("Tender not found"));
     }
 
     public List<TenderDto> findAllTendersForPurchaser(Long id){

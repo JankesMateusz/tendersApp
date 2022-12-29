@@ -7,11 +7,11 @@ interface PurchaserRepository{
 
     Optional<Purchaser> findById(Long id);
 
-    Optional<Purchaser> findByName(String name);
+    Optional<Purchaser> findByOfficialName(String name);
 
     List<Purchaser> findAll();
 
-    List<Purchaser> findByNameIgnoreCaseContaining(String name);
+    List<Purchaser> findByOfficialNameIgnoreCaseContaining(String name);
 
     Purchaser save(Purchaser entity);
 

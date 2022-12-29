@@ -24,7 +24,7 @@ class TenderItemMapper implements DtoMapper<TenderItemDto, TenderItem> {
     public TenderItem toEntity(TenderItemDto dto) {
         var item = new TenderItem();
         item.setId(dto.getId());
-        item.setCategory(ItemCategory.valueOf(dto.getCategory()));
+        item.setCategory(ItemCategory.valueOf(dto.getCategory().toUpperCase()));
         item.setQuantity(dto.getQuantity());
         item.setOs(item.getOs());
         item.setOffice(item.getOffice());
