@@ -37,10 +37,12 @@ public class PurchaserServiceTest {
         //given
         var repository = inMemoryPurchaserRepository();
         //system
-        var service = new PurchaserService(repository, null);
+        var mapper = new PurchaserMapper();
+        var service = new PurchaserService(repository, mapper);
+
         //when
-        Throwable t = catchThrowable(() -> service.findPurchaser(3L));
-        //
+        Throwable t = catchThrowable(() -> service.findPurchaser(1L));
+
         assertThat(t).isInstanceOf(Exception.class);
         assertThat(t.getMessage()).isEqualTo("Purchaser not found");
     }
