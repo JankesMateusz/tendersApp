@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class PurchaserMapper implements DtoMapper<PurchaserDto, Purchaser> {
+class PurchaserMapper implements DtoMapper<PurchaserDto, Purchaser> {
 
     @Override
     public PurchaserDto toDto(Purchaser entity) {
