@@ -17,7 +17,7 @@ class TenderController {
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<TenderDto> get(@PathVariable long id){
+    ResponseEntity<TenderDto> findTender(@PathVariable long id){
         TenderDto tender = tenderService.findSingleTender(id);
         if(tender == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
