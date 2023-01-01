@@ -17,58 +17,58 @@ public class TenderServiceTest {
 
     @Test
     @Description("Should return tender if it does exist in repository")
-    public void findSingleTenderReturnsTender() {
+    public void findSingleTenderReturnsTender() throws Exception {
 
         //given
-        var tender = mock(Tender.class);
-        var purchaser = mock(Purchaser.class);
-        when(tender.getPurchaser()).thenReturn(purchaser);
-        var repository = mock(TenderRepository.class);
-        when(repository.findById(anyLong())).thenReturn(Optional.of(tender));
-
+        var repository = inMemoryTenderRepository();
+        Set<TenderItem> items = new HashSet<>();
+        repository.save(tenderWith(1L, "test", "www.test.pl", "2022-12-01", "2022-12-10", items));
+        //and
+        var mapper = new TenderMapper();
         // system
-        var service = new TenderService(repository, null, null);
+        var service = new TenderService(repository, null, mapper);
         // when
         var result = service.findSingleTender(1L);
         // then
         assertThat(result).isInstanceOf(TenderDto.class);
+        assertThat(result.getTitle()).isEqualTo("test");
     }
 
     @Test
     @Description("Should throw exception when finds no tender")
-    public void findSingleTenderThrowsException() {
+    public void findSingleTenderThrowsException() throws Exception {
 
         //given (empty repository)
         var repository = inMemoryTenderRepository();
+        Set<TenderItem> items = new HashSet<>();
+        repository.save(tenderWith(1L, "test", "www.test.pl", "2022-12-01", "2022-12-10", items));
+        //and
+        var mapper = new TenderMapper();
         // system
-        var service = new TenderService(repository, null, null);
+        var service = new TenderService(repository, null, mapper);
         // assert
-        Throwable t = catchThrowable(() -> service.findSingleTender(1L));
+        Throwable t = catchThrowable(() -> service.findSingleTender(2L));
         assertThat(t).isInstanceOf(Exception.class);
         assertThat(t.getMessage()).isEqualTo("Tender not found");
     }
 
     @Test
     @Description("Should save new tender to repository")
-    public void saveNewTenderToRepository() {
+    public void saveNewTenderToRepository() throws Exception {
         //given
         InMemoryTenderRepository tenderRepository = inMemoryTenderRepository();
         int countBeforeTest = tenderRepository.count();
         //and
-        var tenderFactoryMock = mock(TenderFactory.class);
+        var mapper = new TenderMapper();
         //and
         var tenderItemRepositoryMock = mock(TenderItemRepository.class);
         //and
-        var tenderDto = mock(TenderDto.class);
-        //and
-        var tender = mock(Tender.class);
-        //and
-        when(tender.toDto()).thenReturn(tenderDto);
-        when(tenderFactoryMock.from(tenderDto)).thenReturn(tender);
+        Set<TenderItem> items = new HashSet<>();
+        var tender = tenderWith(1L, "test", "www.test.pl", "2022-12-01", "2022-12-10", items);
         //system under test:
-        var toTest = new TenderService(tenderRepository, tenderItemRepositoryMock, tenderFactoryMock);
+        var toTest = new TenderService(tenderRepository, tenderItemRepositoryMock, mapper);
         //when
-        toTest.saveTender(tenderDto);
+        toTest.saveTender(mapper.toDto(tender));
         //test
         assertThat(countBeforeTest).isNotEqualTo(tenderRepository.count());
     }
@@ -85,15 +85,13 @@ public class TenderServiceTest {
         tenderRepository.save(tender);
         int countBeforeTest = tenderRepository.count();
         //and
-        var factory = mock(TenderFactory.class);
+        var mapper = new TenderMapper();
         //updated tender
         var updatedTender = tenderWith(1, "test 2", "www.test2.pl", "2022-12-01", "2022-12-10", items);
-        var dto = updatedTender.toDto();
-        when(factory.from(dto)).thenReturn(updatedTender);
         //system under test
-        var service = new TenderService(tenderRepository, null, factory);
+        var service = new TenderService(tenderRepository, null, mapper);
         //when
-        service.saveTender(dto);
+        service.saveTender(mapper.toDto(updatedTender));
         //assert
         assertThat(service.findSingleTender(1L).getTitle()).isEqualTo("test 2");
         assertThat(service.findSingleTender(1L).getLink()).isEqualTo("www.test2.pl");
@@ -104,6 +102,8 @@ public class TenderServiceTest {
     public void findTendersContainingPhrase() throws Exception {
         //given
         InMemoryTenderRepository tenderRepository = inMemoryTenderRepository();
+        //and
+        var mapper = new TenderMapper();
         //and
         Set<TenderItem> items = new HashSet<>();
         var tender = tenderWith(1, "test", "www.test.pl", "2022-12-01", "2022-12-10", items);
@@ -116,7 +116,7 @@ public class TenderServiceTest {
         //and
         var factory = mock(TenderFactory.class);
         //system under test
-        var service = new TenderService(tenderRepository, null, factory);
+        var service = new TenderService(tenderRepository, null, mapper);
         //when
         var result = service.findAllTendersByTitle("test");
 
@@ -128,6 +128,8 @@ public class TenderServiceTest {
     public void updateTenderAndRemoveItemFromTenderItems() throws Exception {
         //given
         InMemoryTenderRepository tenderRepository = inMemoryTenderRepository();
+        //and
+        var mapper = new TenderMapper();
         //and
         Set<TenderItem> items = new HashSet<>();
         Set<TenderItem> itemsForUpdate = new HashSet<>();
@@ -144,10 +146,10 @@ public class TenderServiceTest {
         //updated tender
         itemsForUpdate.add(tenderItemWith(1L, ItemCategory.NOTEBOOK, 5));
         var updatedTender = tenderWith(1, "test 2", "www.test2.pl", "2022-12-01", "2022-12-10", itemsForUpdate);
-        var updatedTenderDto = updatedTender.toDto();
-        when(factory.from(updatedTenderDto)).thenReturn(updatedTender);
         //system under test
-        var service = new TenderService(tenderRepository, itemRepository, factory);
+        var service = new TenderService(tenderRepository, itemRepository, mapper);
+        var updatedTenderDto = mapper.toDto(updatedTender);
+        when(factory.from(updatedTenderDto)).thenReturn(updatedTender);
         //when
         service.saveTender(updatedTenderDto);
         //assert
@@ -159,6 +161,8 @@ public class TenderServiceTest {
     public void updateTenderAndUpdateTenderItems() throws Exception {
         //given
         InMemoryTenderRepository tenderRepository = inMemoryTenderRepository();
+        //and
+        var mapper = new TenderMapper();
         //and
         Set<TenderItem> items = new HashSet<>();
         Set<TenderItem> itemsForUpdate = new HashSet<>();
@@ -176,10 +180,10 @@ public class TenderServiceTest {
         itemsForUpdate.add(tenderItemWith(1L, ItemCategory.NOTEBOOK, 5));
         itemsForUpdate.add(tenderItemWith(2L, ItemCategory.AIO, 100));
         itemsForUpdate.add(tenderItemWith(3L, ItemCategory.MFP, 10));
-        var updatedTenderDto = tenderForUpdate.toDto();
-        when(factory.from(updatedTenderDto)).thenReturn(tenderForUpdate);
         //system under test
-        var service = new TenderService(tenderRepository, itemRepository, factory);
+        var service = new TenderService(tenderRepository, itemRepository, mapper);
+        var updatedTenderDto = mapper.toDto(tenderForUpdate);
+        when(factory.from(updatedTenderDto)).thenReturn(tenderForUpdate);
         //when
         service.saveTender(updatedTenderDto);
         //

@@ -181,8 +181,4 @@ public class Tender{
         tenderItems.remove(item);
         item.setTender(null);
     }
-
-    TenderDto toDto() {
-        return new TenderDto(this);
-    }
 }

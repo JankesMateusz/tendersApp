@@ -26,13 +26,13 @@ class TenderController {
     }
 
     @PostMapping
-    ResponseEntity<TenderDto>  create(@RequestBody TenderDto toCreate){
+    ResponseEntity<TenderDto>  create(@RequestBody TenderDto toCreate) throws Exception {
         TenderDto  result = tenderService.saveTender(toCreate);
         return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<TenderDto> update(@PathVariable long id, @RequestBody TenderDto toUpdate){
+    ResponseEntity<TenderDto> update(@PathVariable long id, @RequestBody TenderDto toUpdate) throws Exception {
         if(id != toUpdate.getId() && toUpdate.getId() != 0){
             throw new IllegalStateException("Id in URL is not equal to Id in request: " + id + " != " + toUpdate.getId());
         }

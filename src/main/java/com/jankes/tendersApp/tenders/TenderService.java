@@ -12,18 +12,18 @@ public class TenderService {
 
     private final TenderRepository tenderRepository;
     private final TenderItemRepository tenderItemRepository;
-    private final TenderFactory tenderFactory;
+    private final TenderMapper mapper;
 
-    public TenderService(TenderRepository tenderRepository, TenderItemRepository tenderItemRepository, TenderFactory tenderFactory){
+    public TenderService(TenderRepository tenderRepository, TenderItemRepository tenderItemRepository, TenderMapper mapper){
         this.tenderRepository = tenderRepository;
         this.tenderItemRepository = tenderItemRepository;
-        this.tenderFactory = tenderFactory;
+        this.mapper = mapper;
     }
 
 
     public TenderDto findSingleTender(Long id){
         return tenderRepository.findById(id)
-                .map(TenderDto::new)
+                .map(mapper::toDto)
                 .orElseThrow(
                         () -> new IllegalStateException("Tender not found"));
     }
@@ -31,24 +31,26 @@ public class TenderService {
     public List<TenderDto> findAllTendersForPurchaser(Long id){
         return tenderRepository.findAllByPurchaserId(id)
                 .stream()
-                .map(TenderDto::new)
+                .map(mapper::toDto)
                 .collect(Collectors.toList());
     }
 
     public List<TenderDto> findAllTendersByTitle(String phrase){
         return tenderRepository.findAllByTitleIgnoreCaseContaining(phrase)
                 .stream()
-                .map(TenderDto::new)
+                .map(mapper::toDto)
                 .collect(Collectors.toList());
     }
 
     //TODO tender status? status update?
-    TenderDto saveTender(TenderDto dtoToSave){
-        var toSave = tenderFactory.from(dtoToSave);
+    TenderDto saveTender(TenderDto dtoToSave) throws Exception {
+        var toSave = mapper.toEntity(dtoToSave);
         if(tenderRepository.existsById(toSave.getId())){
-            return updateTender(toSave).toDto();
+            var result = updateTender(toSave);
+            return mapper.toDto(result);
         }
-        return tenderRepository.save(toSave).toDto();
+        var result = tenderRepository.save(toSave);
+        return mapper.toDto(result);
     }
 
     private Tender updateTender(Tender toSave){
