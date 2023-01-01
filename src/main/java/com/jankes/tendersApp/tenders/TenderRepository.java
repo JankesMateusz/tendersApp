@@ -13,4 +13,6 @@ interface TenderRepository {
     Tender save(Tender entity);
 
     Optional<Tender> findById(Long id);
+
+    List<Tender> findAllByTitleIgnoreCaseContaining(String phrase);
 }

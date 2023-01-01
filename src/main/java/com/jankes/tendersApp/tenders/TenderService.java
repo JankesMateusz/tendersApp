@@ -35,6 +35,13 @@ public class TenderService {
                 .collect(Collectors.toList());
     }
 
+    public List<TenderDto> findAllTendersByTitle(String phrase){
+        return tenderRepository.findAllByTitleIgnoreCaseContaining(phrase)
+                .stream()
+                .map(TenderDto::new)
+                .collect(Collectors.toList());
+    }
+
     //TODO tender status? status update?
     TenderDto saveTender(TenderDto dtoToSave){
         var toSave = tenderFactory.from(dtoToSave);

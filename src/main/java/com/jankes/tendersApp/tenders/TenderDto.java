@@ -10,7 +10,6 @@ public class TenderDto {
     private Date publicationDate;
     private Date bidDate;
     private String link;
-
     private String title;
     private List<TenderItemDto> tenderItems;
 

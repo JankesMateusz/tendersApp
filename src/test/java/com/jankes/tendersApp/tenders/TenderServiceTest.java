@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -74,7 +75,7 @@ public class TenderServiceTest {
 
     @Test
     @Description("Should update existing tender")
-    public void updateTenderWithoutItemsToRemoveOrUpdate() throws Exception{
+    public void updateTenderWithoutItemsToRemoveOrUpdate() throws Exception {
         //given
         InMemoryTenderRepository tenderRepository = inMemoryTenderRepository();
         //and
@@ -90,7 +91,7 @@ public class TenderServiceTest {
         var dto = updatedTender.toDto();
         when(factory.from(dto)).thenReturn(updatedTender);
         //system under test
-        var service = new TenderService(tenderRepository,null, factory);
+        var service = new TenderService(tenderRepository, null, factory);
         //when
         service.saveTender(dto);
         //assert
@@ -100,8 +101,31 @@ public class TenderServiceTest {
     }
 
     @Test
+    public void findTendersContainingPhrase() throws Exception {
+        //given
+        InMemoryTenderRepository tenderRepository = inMemoryTenderRepository();
+        //and
+        Set<TenderItem> items = new HashSet<>();
+        var tender = tenderWith(1, "test", "www.test.pl", "2022-12-01", "2022-12-10", items);
+        var tender2 = tenderWith(2, "test23", "www.test.pl", "2022-12-01", "2022-12-10", items);
+        var tender3 = tenderWith(3, "nothing", "www.test.pl", "2022-12-01", "2022-12-10", items);
+        //and
+        tenderRepository.save(tender);
+        tenderRepository.save(tender2);
+        tenderRepository.save(tender3);
+        //and
+        var factory = mock(TenderFactory.class);
+        //system under test
+        var service = new TenderService(tenderRepository, null, factory);
+        //when
+        var result = service.findAllTendersByTitle("test");
+
+        assertThat(result.size()).isEqualTo(2);
+    }
+
+    @Test
     @Description("Should update tender and remove one tender item")
-    public void updateTenderAndRemoveItemFromTenderItems() throws Exception{
+    public void updateTenderAndRemoveItemFromTenderItems() throws Exception {
         //given
         InMemoryTenderRepository tenderRepository = inMemoryTenderRepository();
         //and
@@ -132,7 +156,7 @@ public class TenderServiceTest {
     }
 
     @Test
-    public void updateTenderAndUpdateTenderItems() throws Exception{
+    public void updateTenderAndUpdateTenderItems() throws Exception {
         //given
         InMemoryTenderRepository tenderRepository = inMemoryTenderRepository();
         //and
@@ -189,6 +213,13 @@ public class TenderServiceTest {
         }
 
         @Override
+        public List<Tender> findAllByTitleIgnoreCaseContaining(String phrase) {
+            return map.values().stream().filter(t -> t.getTitle()
+                            .contains(phrase))
+                    .collect(Collectors.toList());
+        }
+
+        @Override
         public Tender save(Tender entity) {
             if (entity.getId() == 0) {
                 try {
@@ -209,12 +240,15 @@ public class TenderServiceTest {
         }
     }
 
-    private InMemoryTenderItemRepository inMemoryTenderItemRepository() {return new InMemoryTenderItemRepository();}
+    private InMemoryTenderItemRepository inMemoryTenderItemRepository() {
+        return new InMemoryTenderItemRepository();
+    }
 
     private static class InMemoryTenderItemRepository implements TenderItemRepository {
 
         private long index = 0;
         private Map<Long, TenderItem> map = new HashMap<>();
+
         @Override
         public Optional<TenderItem> findById(Long id) {
             return Optional.ofNullable(map.get(id));
@@ -241,7 +275,7 @@ public class TenderServiceTest {
         }
     }
 
-    private Tender tenderWith(long id, String title, String link, String publicationDate, String bidDate, Set<TenderItem> items) throws Exception{
+    private Tender tenderWith(long id, String title, String link, String publicationDate, String bidDate, Set<TenderItem> items) throws Exception {
 
         SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyy");
 
@@ -256,7 +290,7 @@ public class TenderServiceTest {
         return tenderForTest;
     }
 
-    private TenderItem tenderItemWith(long id, ItemCategory category, int quantity){
+    private TenderItem tenderItemWith(long id, ItemCategory category, int quantity) {
 
         var item = new TenderItem();
 
