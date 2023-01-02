@@ -1,5 +1,6 @@
 package com.jankes.tendersApp.purchasers;
 
+import com.jankes.tendersApp.tenders.Tender;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,7 +38,7 @@ public class PurchaserService {
                 .collect(Collectors.toList());
     }
 
-    public PurchaserDto createPurchaser(PurchaserDto toCreate) throws Exception{
+    public PurchaserDto createPurchaser(PurchaserDto toCreate){
         var toSave = mapper.toEntity(toCreate);
 
         if(purchaserRepository.existsById(toCreate.getId())){
@@ -67,5 +68,10 @@ public class PurchaserService {
                 }).orElseThrow(() -> {
                     throw new IllegalStateException("Purchaser not found");
                 });
+    }
+
+    public void addTender(Tender toAdd){
+        Purchaser purchaser = purchaserRepository.findById(toAdd.getPurchaser().getId()).orElse(null);
+        if (purchaser != null) purchaser.addTender(toAdd);
     }
 }

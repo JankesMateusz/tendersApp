@@ -1,6 +1,7 @@
 package com.jankes.tendersApp.tenders;
 
 import com.jankes.tendersApp.common.DtoMapper;
+import com.jankes.tendersApp.purchasers.PurchaserMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -18,6 +19,7 @@ public class TenderMapper implements DtoMapper<TenderDto, Tender> {
                 .withBidDate(format(entity.getBidDate()))
                 .withTitle(entity.getTitle())
                 .withLink(entity.getLink())
+                .withPurchaser(entity.getPurchaser())
                 .withTenderItems(entity.getTenderItems())
                 .build();
     }
@@ -30,6 +32,7 @@ public class TenderMapper implements DtoMapper<TenderDto, Tender> {
         result.setBidDate(LocalDate.parse(dto.getBidDate(), DateTimeFormatter.ofPattern("dd-MM-yyyy")));
         result.setTitle(dto.getTitle());
         result.setLink(dto.getLink());
+        result.setPurchaser(new PurchaserMapper().toEntity(dto.getPurchaser()));
         result.setTenderItems(
                 dto.getTenderItems()
                         .stream()

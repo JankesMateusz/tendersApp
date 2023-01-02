@@ -1,7 +1,9 @@
 package com.jankes.tendersApp.tenders;
 
+import com.jankes.tendersApp.purchasers.PurchaserService;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -13,11 +15,13 @@ public class TenderService {
     private final TenderRepository tenderRepository;
     private final TenderItemRepository tenderItemRepository;
     private final TenderMapper mapper;
+    private final PurchaserService purchaserService;
 
-    public TenderService(TenderRepository tenderRepository, TenderItemRepository tenderItemRepository, TenderMapper mapper){
+    public TenderService(TenderRepository tenderRepository, TenderItemRepository tenderItemRepository, TenderMapper mapper, PurchaserService purchaserService){
         this.tenderRepository = tenderRepository;
         this.tenderItemRepository = tenderItemRepository;
         this.mapper = mapper;
+        this.purchaserService = purchaserService;
     }
 
 
@@ -42,14 +46,15 @@ public class TenderService {
                 .collect(Collectors.toList());
     }
 
-    //TODO tender status? status update?
-    TenderDto saveTender(TenderDto dtoToSave) throws Exception {
+    @Transactional
+    TenderDto saveTender(TenderDto dtoToSave) {
         var toSave = mapper.toEntity(dtoToSave);
         if(tenderRepository.existsById(toSave.getId())){
             var result = updateTender(toSave);
             return mapper.toDto(result);
         }
         var result = tenderRepository.save(toSave);
+        purchaserService.addTender(toSave);
         return mapper.toDto(result);
     }
 

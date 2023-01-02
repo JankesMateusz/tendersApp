@@ -9,7 +9,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-class PurchaserMapper implements DtoMapper<PurchaserDto, Purchaser>{
+public class PurchaserMapper implements DtoMapper<PurchaserDto, Purchaser>{
 
     @Override
     public PurchaserDto toDto(Purchaser entity) {

@@ -48,7 +48,7 @@ public class PurchaserServiceTest {
     }
 
     @Test
-    public void updatePurchaserEmail() throws Exception{
+    public void updatePurchaserEmail(){
         //given
         var repository = inMemoryPurchaserRepository();
         //and
@@ -69,7 +69,7 @@ public class PurchaserServiceTest {
     }
 
     @Test
-    public void updatePurchaserTypeOfAccount() throws Exception{
+    public void updatePurchaserTypeOfAccount() {
         //given
         var repository = inMemoryPurchaserRepository();
         //and

@@ -36,13 +36,13 @@ class PurchaserController {
     }
 
     @PostMapping
-    ResponseEntity<PurchaserDto> create(@RequestBody PurchaserDto toCreate) throws Exception{
+    ResponseEntity<PurchaserDto> create(@RequestBody PurchaserDto toCreate){
         PurchaserDto result = purchaserService.createPurchaser(toCreate);
         return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<PurchaserDto> update(@PathVariable long id, @RequestBody PurchaserDto toUpdate) throws Exception{
+    ResponseEntity<PurchaserDto> update(@PathVariable long id, @RequestBody PurchaserDto toUpdate){
         if(id != toUpdate.getId() && toUpdate.getId() != 0){
             throw new IllegalStateException("Id in URL is not equal to Id in request: " + id + " != " + toUpdate.getId());
         }

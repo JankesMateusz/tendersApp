@@ -54,7 +54,7 @@ public class Tender{
         return this.id;
     }
 
-    Purchaser getPurchaser() {
+    public Purchaser getPurchaser() {
         return purchaser;
     }
 

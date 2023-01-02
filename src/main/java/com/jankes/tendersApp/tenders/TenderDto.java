@@ -1,5 +1,9 @@
 package com.jankes.tendersApp.tenders;
 
+import com.jankes.tendersApp.purchasers.Purchaser;
+import com.jankes.tendersApp.purchasers.PurchaserDto;
+import com.jankes.tendersApp.purchasers.PurchaserMapper;
+
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -11,6 +15,7 @@ public class TenderDto {
     private String bidDate;
     private String link;
     private String title;
+    private PurchaserDto purchaser;
     private List<TenderItemDto> tenderItems;
 
     public static Builder builder() {return new Builder();}
@@ -21,6 +26,7 @@ public class TenderDto {
         this.bidDate = builder.bidDate;
         this.title = builder.title;
         this.link = builder.link;
+        this.purchaser = builder.purchaser;
         this.tenderItems = builder.tenderItems;
     }
 
@@ -30,6 +36,7 @@ public class TenderDto {
         private String bidDate;
         private String link;
         private String title;
+        private PurchaserDto purchaser;
         private List<TenderItemDto> tenderItems;
 
         public Builder withId(long id){
@@ -54,6 +61,11 @@ public class TenderDto {
 
         public Builder withTitle(String title){
             this.title = title;
+            return this;
+        }
+
+        public Builder withPurchaser(Purchaser purchaser){
+            this.purchaser = new PurchaserMapper().toDto(purchaser);
             return this;
         }
 
@@ -87,6 +99,10 @@ public class TenderDto {
 
     public String getTitle() {
         return title;
+    }
+
+    public PurchaserDto getPurchaser() {
+        return purchaser;
     }
 
     public List<TenderItemDto> getTenderItems() {

@@ -1,5 +1,5 @@
 package com.jankes.tendersApp.purchasers;
 
-enum TypeOfAccount {
+public enum TypeOfAccount {
     EDUK12, DEFENCE, HEALTHCARE //More...
 }

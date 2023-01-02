@@ -1,5 +1,7 @@
 package com.jankes.tendersApp.tenders;
 
+import com.jankes.tendersApp.purchasers.PurchaserService;
+import com.jankes.tendersApp.purchasers.TypeOfAccount;
 import jdk.jfr.Description;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +18,7 @@ public class TenderServiceTest {
 
     @Test
     @Description("Should return tender if it does exist in repository")
-    public void findSingleTenderReturnsTender() throws Exception {
+    public void findSingleTenderReturnsTender() {
 
         //given
         var repository = inMemoryTenderRepository();
@@ -24,8 +26,10 @@ public class TenderServiceTest {
         repository.save(tenderWith(1L, "test", "www.test.pl", "01-01-2022", "08-01-2022", items));
         //and
         var mapper = new TenderMapper();
+        //and
+        var purchaserService = mock(PurchaserService.class);
         // system
-        var service = new TenderService(repository, null, mapper);
+        var service = new TenderService(repository, null, mapper, purchaserService);
         // when
         var result = service.findSingleTender(1L);
         // then
@@ -35,7 +39,7 @@ public class TenderServiceTest {
 
     @Test
     @Description("Should throw exception when finds no tender")
-    public void findSingleTenderThrowsException() throws Exception {
+    public void findSingleTenderThrowsException() {
 
         //given (empty repository)
         var repository = inMemoryTenderRepository();
@@ -44,7 +48,7 @@ public class TenderServiceTest {
         //and
         var mapper = new TenderMapper();
         // system
-        var service = new TenderService(repository, null, mapper);
+        var service = new TenderService(repository, null, mapper, null);
         // assert
         Throwable t = catchThrowable(() -> service.findSingleTender(2L));
         assertThat(t).isInstanceOf(Exception.class);
@@ -53,19 +57,21 @@ public class TenderServiceTest {
 
     @Test
     @Description("Should save new tender to repository")
-    public void saveNewTenderToRepository() throws Exception {
+    public void saveNewTenderToRepository() {
         //given
         InMemoryTenderRepository tenderRepository = inMemoryTenderRepository();
         int countBeforeTest = tenderRepository.count();
         //and
         var mapper = new TenderMapper();
         //and
+        var purchaserService = mock(PurchaserService.class);
+        //and
         var tenderItemRepositoryMock = mock(TenderItemRepository.class);
         //and
         Set<TenderItem> items = new HashSet<>();
         var tender = tenderWith(1L, "test", "www.test.pl", "01-01-2022", "08-01-2022", items);
         //system under test:
-        var toTest = new TenderService(tenderRepository, tenderItemRepositoryMock, mapper);
+        var toTest = new TenderService(tenderRepository, tenderItemRepositoryMock, mapper, purchaserService);
         //when
         toTest.saveTender(mapper.toDto(tender));
         //test
@@ -74,7 +80,7 @@ public class TenderServiceTest {
 
     @Test
     @Description("Should update existing tender")
-    public void updateTenderWithoutItemsToRemoveOrUpdate() throws Exception {
+    public void updateTenderWithoutItemsToRemoveOrUpdate() {
         //given
         InMemoryTenderRepository tenderRepository = inMemoryTenderRepository();
         //and
@@ -85,10 +91,12 @@ public class TenderServiceTest {
         int countBeforeTest = tenderRepository.count();
         //and
         var mapper = new TenderMapper();
+        //and
+        var purchaserService = mock(PurchaserService.class);
         //updated tender
         var updatedTender = tenderWith(1, "test 2", "www.test2.pl", "01-01-2022", "08-01-2022", items);
         //system under test
-        var service = new TenderService(tenderRepository, null, mapper);
+        var service = new TenderService(tenderRepository, null, mapper, purchaserService);
         //when
         service.saveTender(mapper.toDto(updatedTender));
         //assert
@@ -98,11 +106,13 @@ public class TenderServiceTest {
     }
 
     @Test
-    public void findTendersContainingPhrase() throws Exception {
+    public void findTendersContainingPhrase() {
         //given
         InMemoryTenderRepository tenderRepository = inMemoryTenderRepository();
         //and
         var mapper = new TenderMapper();
+        //and
+        var purchaserService = mock(PurchaserService.class);
         //and
         Set<TenderItem> items = new HashSet<>();
         var tender = tenderWith(1, "test", "www.test.pl", "01-01-2022", "08-01-2022", items);
@@ -115,7 +125,7 @@ public class TenderServiceTest {
         //and
         var factory = mock(TenderFactory.class);
         //system under test
-        var service = new TenderService(tenderRepository, null, mapper);
+        var service = new TenderService(tenderRepository, null, mapper, purchaserService);
         //when
         var result = service.findAllTendersByTitle("test");
 
@@ -124,11 +134,13 @@ public class TenderServiceTest {
 
     @Test
     @Description("Should update tender and remove one tender item")
-    public void updateTenderAndRemoveItemFromTenderItems() throws Exception {
+    public void updateTenderAndRemoveItemFromTenderItems() {
         //given
         InMemoryTenderRepository tenderRepository = inMemoryTenderRepository();
         //and
         var mapper = new TenderMapper();
+        //and
+        var purchaserService = mock(PurchaserService.class);
         //and
         Set<TenderItem> items = new HashSet<>();
         Set<TenderItem> itemsForUpdate = new HashSet<>();
@@ -146,7 +158,7 @@ public class TenderServiceTest {
         itemsForUpdate.add(tenderItemWith(1L, ItemCategory.NOTEBOOK, 5));
         var updatedTender = tenderWith(1, "test 2", "www.test2.pl", "01-01-2022", "08-01-2022", itemsForUpdate);
         //system under test
-        var service = new TenderService(tenderRepository, itemRepository, mapper);
+        var service = new TenderService(tenderRepository, itemRepository, mapper, purchaserService);
         var updatedTenderDto = mapper.toDto(updatedTender);
         when(factory.from(updatedTenderDto)).thenReturn(updatedTender);
         //when
@@ -157,11 +169,13 @@ public class TenderServiceTest {
     }
 
     @Test
-    public void updateTenderAndUpdateTenderItems() throws Exception {
+    public void updateTenderAndUpdateTenderItems() {
         //given
         InMemoryTenderRepository tenderRepository = inMemoryTenderRepository();
         //and
         var mapper = new TenderMapper();
+        //and
+        var purchaserService = mock(PurchaserService.class);
         //and
         Set<TenderItem> items = new HashSet<>();
         Set<TenderItem> itemsForUpdate = new HashSet<>();
@@ -180,7 +194,7 @@ public class TenderServiceTest {
         itemsForUpdate.add(tenderItemWith(2L, ItemCategory.AIO, 100));
         itemsForUpdate.add(tenderItemWith(3L, ItemCategory.MFP, 10));
         //system under test
-        var service = new TenderService(tenderRepository, itemRepository, mapper);
+        var service = new TenderService(tenderRepository, itemRepository, mapper, purchaserService);
         var updatedTenderDto = mapper.toDto(tenderForUpdate);
         when(factory.from(updatedTenderDto)).thenReturn(tenderForUpdate);
         //when
@@ -278,15 +292,19 @@ public class TenderServiceTest {
         }
     }
 
-    private Tender tenderWith(long id, String title, String link, String publicationDate, String bidDate, Set<TenderItem> items) throws Exception {
+    private Tender tenderWith(long id, String title, String link, String publicationDate, String bidDate, Set<TenderItem> items) {
 
         var tenderForTest = new Tender();
+        var purchaser = mock(com.jankes.tendersApp.purchasers.Purchaser.class);
+        when(purchaser.getId()).thenReturn(1L);
+        when(purchaser.getTypeOfAccount()).thenReturn(TypeOfAccount.DEFENCE);
         tenderForTest.setId(id);
         tenderForTest.setTitle(title);
         tenderForTest.setLink(link);
         tenderForTest.setPublicationDate(LocalDate.parse(publicationDate, DateTimeFormatter.ofPattern("dd-MM-yyyy")));
         tenderForTest.setBidDate(LocalDate.parse(bidDate, DateTimeFormatter.ofPattern("dd-MM-yyyy")));
         tenderForTest.setTenderItems(items);
+        tenderForTest.setPurchaser(purchaser);
 
         return tenderForTest;
     }
