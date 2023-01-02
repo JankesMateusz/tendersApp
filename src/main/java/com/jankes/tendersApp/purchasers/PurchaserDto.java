@@ -1,5 +1,13 @@
 package com.jankes.tendersApp.purchasers;
 
+import com.jankes.tendersApp.tenders.Tender;
+import com.jankes.tendersApp.tenders.TenderDto;
+import com.jankes.tendersApp.tenders.TenderMapper;
+
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 public class PurchaserDto {
 
     private final long id;
@@ -13,6 +21,7 @@ public class PurchaserDto {
     private final String personOfContactLastName;
     private final String phone;
     private final String email;
+    private final List<TenderDto> tenders;
 
     public static Builder builder() {
         return new Builder();
@@ -30,6 +39,7 @@ public class PurchaserDto {
         this.personOfContactLastName = builder.personOfContactLastName;
         this.phone = builder.phone;
         this.email = builder.email;
+        this.tenders = builder.tenders;
     }
 
     public Long getId() {
@@ -76,6 +86,10 @@ public class PurchaserDto {
         return email;
     }
 
+    public List<TenderDto> getTenders() {
+        return tenders;
+    }
+
     public static class Builder {
         private long id;
         private String officialName;
@@ -88,6 +102,7 @@ public class PurchaserDto {
         private String personOfContactLastName;
         private String phone;
         private String email;
+        private List<TenderDto> tenders;
 
         public Builder withId(long id){
             this.id = id;
@@ -141,6 +156,13 @@ public class PurchaserDto {
 
         public Builder withEmail(String email){
             this.email = email;
+            return this;
+        }
+
+        public Builder withTenders(Set<Tender> tenders){
+            this.tenders = tenders.stream()
+                    .map( t -> new TenderMapper().toDto(t))
+                    .collect(Collectors.toList());
             return this;
         }
 

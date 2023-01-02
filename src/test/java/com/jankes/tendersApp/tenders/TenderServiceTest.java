@@ -1,15 +1,14 @@
 package com.jankes.tendersApp.tenders;
 
-import com.jankes.tendersApp.purchasers.Purchaser;
 import jdk.jfr.Description;
 import org.junit.jupiter.api.Test;
 
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -22,7 +21,7 @@ public class TenderServiceTest {
         //given
         var repository = inMemoryTenderRepository();
         Set<TenderItem> items = new HashSet<>();
-        repository.save(tenderWith(1L, "test", "www.test.pl", "2022-12-01", "2022-12-10", items));
+        repository.save(tenderWith(1L, "test", "www.test.pl", "01-01-2022", "08-01-2022", items));
         //and
         var mapper = new TenderMapper();
         // system
@@ -41,7 +40,7 @@ public class TenderServiceTest {
         //given (empty repository)
         var repository = inMemoryTenderRepository();
         Set<TenderItem> items = new HashSet<>();
-        repository.save(tenderWith(1L, "test", "www.test.pl", "2022-12-01", "2022-12-10", items));
+        repository.save(tenderWith(1L, "test", "www.test.pl", "01-01-2022", "08-01-2022", items));
         //and
         var mapper = new TenderMapper();
         // system
@@ -64,7 +63,7 @@ public class TenderServiceTest {
         var tenderItemRepositoryMock = mock(TenderItemRepository.class);
         //and
         Set<TenderItem> items = new HashSet<>();
-        var tender = tenderWith(1L, "test", "www.test.pl", "2022-12-01", "2022-12-10", items);
+        var tender = tenderWith(1L, "test", "www.test.pl", "01-01-2022", "08-01-2022", items);
         //system under test:
         var toTest = new TenderService(tenderRepository, tenderItemRepositoryMock, mapper);
         //when
@@ -80,14 +79,14 @@ public class TenderServiceTest {
         InMemoryTenderRepository tenderRepository = inMemoryTenderRepository();
         //and
         Set<TenderItem> items = new HashSet<>();
-        var tender = tenderWith(1, "test", "www.test.pl", "2022-12-01", "2022-12-10", items);
+        var tender = tenderWith(1, "test", "www.test.pl", "01-01-2022", "08-01-2022", items);
         //and
         tenderRepository.save(tender);
         int countBeforeTest = tenderRepository.count();
         //and
         var mapper = new TenderMapper();
         //updated tender
-        var updatedTender = tenderWith(1, "test 2", "www.test2.pl", "2022-12-01", "2022-12-10", items);
+        var updatedTender = tenderWith(1, "test 2", "www.test2.pl", "01-01-2022", "08-01-2022", items);
         //system under test
         var service = new TenderService(tenderRepository, null, mapper);
         //when
@@ -106,9 +105,9 @@ public class TenderServiceTest {
         var mapper = new TenderMapper();
         //and
         Set<TenderItem> items = new HashSet<>();
-        var tender = tenderWith(1, "test", "www.test.pl", "2022-12-01", "2022-12-10", items);
-        var tender2 = tenderWith(2, "test23", "www.test.pl", "2022-12-01", "2022-12-10", items);
-        var tender3 = tenderWith(3, "nothing", "www.test.pl", "2022-12-01", "2022-12-10", items);
+        var tender = tenderWith(1, "test", "www.test.pl", "01-01-2022", "08-01-2022", items);
+        var tender2 = tenderWith(2, "test23", "www.test.pl", "01-01-2022", "08-01-2022", items);
+        var tender3 = tenderWith(3, "nothing", "www.test.pl", "01-01-2022", "08-01-2022", items);
         //and
         tenderRepository.save(tender);
         tenderRepository.save(tender2);
@@ -136,7 +135,7 @@ public class TenderServiceTest {
         items.add(tenderItemWith(1L, ItemCategory.NOTEBOOK, 5));
         items.add(tenderItemWith(2L, ItemCategory.AIO, 10));
         //and
-        var tender = tenderWith(1, "test", "www.test.pl", "2022-12-01", "2022-12-10", items);
+        var tender = tenderWith(1, "test", "www.test.pl", "01-01-2022", "08-01-2022", items);
         tenderRepository.save(tender);
         int countBeforeTest = tenderRepository.count();
         //and
@@ -145,7 +144,7 @@ public class TenderServiceTest {
         var itemRepository = inMemoryTenderItemRepository();
         //updated tender
         itemsForUpdate.add(tenderItemWith(1L, ItemCategory.NOTEBOOK, 5));
-        var updatedTender = tenderWith(1, "test 2", "www.test2.pl", "2022-12-01", "2022-12-10", itemsForUpdate);
+        var updatedTender = tenderWith(1, "test 2", "www.test2.pl", "01-01-2022", "08-01-2022", itemsForUpdate);
         //system under test
         var service = new TenderService(tenderRepository, itemRepository, mapper);
         var updatedTenderDto = mapper.toDto(updatedTender);
@@ -169,9 +168,9 @@ public class TenderServiceTest {
         items.add(tenderItemWith(1L, ItemCategory.NOTEBOOK, 5));
         items.add(tenderItemWith(2L, ItemCategory.AIO, 10));
         //and
-        var tender = tenderWith(1, "test", "www.test.pl", "2022-12-01", "2022-12-10", items);
+        var tender = tenderWith(1, "test", "www.test.pl", "01-01-2022", "08-01-2022", items);
         tenderRepository.save(tender);
-        var tenderForUpdate = tenderWith(1, "test", "www.test.pl", "2022-12-01", "2022-12-10", itemsForUpdate);
+        var tenderForUpdate = tenderWith(1, "test", "www.test.pl", "01-01-2022", "08-01-2022", itemsForUpdate);
         //and
         var factory = mock(TenderFactory.class);
         //and
@@ -281,14 +280,12 @@ public class TenderServiceTest {
 
     private Tender tenderWith(long id, String title, String link, String publicationDate, String bidDate, Set<TenderItem> items) throws Exception {
 
-        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyy");
-
         var tenderForTest = new Tender();
         tenderForTest.setId(id);
         tenderForTest.setTitle(title);
         tenderForTest.setLink(link);
-        tenderForTest.setPublicationDate(format.parse(publicationDate));
-        tenderForTest.setBidDate(format.parse(bidDate));
+        tenderForTest.setPublicationDate(LocalDate.parse(publicationDate, DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+        tenderForTest.setBidDate(LocalDate.parse(bidDate, DateTimeFormatter.ofPattern("dd-MM-yyyy")));
         tenderForTest.setTenderItems(items);
 
         return tenderForTest;

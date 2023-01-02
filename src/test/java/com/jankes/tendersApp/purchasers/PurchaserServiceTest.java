@@ -14,7 +14,7 @@ public class PurchaserServiceTest {
 
     @Test
     @Description("Saves new purchaser to repository")
-    public void saveNewPurchaser(){
+    public void saveNewPurchaser() throws Exception{
         //given
         var repository = inMemoryPurchaserRepository();
         int countBefore = repository.count();
@@ -48,7 +48,7 @@ public class PurchaserServiceTest {
     }
 
     @Test
-    public void updatePurchaserEmail(){
+    public void updatePurchaserEmail() throws Exception{
         //given
         var repository = inMemoryPurchaserRepository();
         //and
@@ -69,7 +69,7 @@ public class PurchaserServiceTest {
     }
 
     @Test
-    public void updatePurchaserTypeOfAccount(){
+    public void updatePurchaserTypeOfAccount() throws Exception{
         //given
         var repository = inMemoryPurchaserRepository();
         //and

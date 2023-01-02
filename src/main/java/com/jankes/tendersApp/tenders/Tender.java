@@ -1,9 +1,10 @@
 package com.jankes.tendersApp.tenders;
 
 import com.jankes.tendersApp.purchasers.Purchaser;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Entity(name = "tenders")
@@ -24,14 +25,17 @@ public class Tender{
     private String personOfContactLastName;
     private String email; //TODO validation
     private String phoneNumber; //TODO validation?
-    private Date publicationDate;
-    private Date bidDate;
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    private LocalDate publicationDate;
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    private LocalDate bidDate;
     private String link;
     private String bidNumber;
     @Enumerated(EnumType.STRING)
     private Status status;
     private boolean isTimeUp;
-    private Date reportDate;
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    private LocalDate reportDate;
     @Enumerated(EnumType.STRING)
     private TenderBudget budget;
     @OneToMany(mappedBy = "tender")
@@ -54,7 +58,7 @@ public class Tender{
         return purchaser;
     }
 
-    void setPurchaser(Purchaser purchaser) {
+    public void setPurchaser(Purchaser purchaser) {
         this.purchaser = purchaser;
     }
 
@@ -66,19 +70,19 @@ public class Tender{
         this.title = title;
     }
 
-    Date getPublicationDate() {
+    LocalDate getPublicationDate() {
         return publicationDate;
     }
 
-    void setPublicationDate(Date publicationDate) {
+    void setPublicationDate(LocalDate publicationDate) {
         this.publicationDate = publicationDate;
     }
 
-    Date getBidDate() {
+    LocalDate getBidDate() {
         return bidDate;
     }
 
-    void setBidDate(Date bidDate) {
+    void setBidDate(LocalDate bidDate) {
         this.bidDate = bidDate;
     }
 
@@ -154,11 +158,11 @@ public class Tender{
         isTimeUp = timeUp;
     }
 
-    public Date getReportDate() {
+    public LocalDate getReportDate() {
         return reportDate;
     }
 
-    public void setReportDate(Date reportDate) {
+    public void setReportDate(LocalDate reportDate) {
         this.reportDate = reportDate;
     }
 

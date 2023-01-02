@@ -28,6 +28,19 @@ public class Purchaser {
 
     public Purchaser(){}
 
+    public void addTender(Tender tender){
+        tenders.add(tender);
+        tender.setPurchaser(this);
+    }
+
+    public void removeTender(Tender tender){
+        if(!tenders.contains(tender)){
+            return;
+        }
+        tenders.remove(tender);
+        tender.setPurchaser(null);
+    }
+
     public Long getId() {
         return id;
     }

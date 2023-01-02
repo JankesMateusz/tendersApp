@@ -37,7 +37,7 @@ public class PurchaserService {
                 .collect(Collectors.toList());
     }
 
-    public PurchaserDto createPurchaser(PurchaserDto toCreate){
+    public PurchaserDto createPurchaser(PurchaserDto toCreate) throws Exception{
         var toSave = mapper.toEntity(toCreate);
 
         if(purchaserRepository.existsById(toCreate.getId())){
@@ -62,7 +62,6 @@ public class PurchaserService {
                     existingPurchaser.setPhoneNumber(toUpdate.getPhoneNumber());
                     existingPurchaser.setZipCode(toUpdate.getZipCode());
                     existingPurchaser.setTypeOfAccount(toUpdate.getTypeOfAccount());
-
                     purchaserRepository.save(existingPurchaser);
                     return existingPurchaser;
                 }).orElseThrow(() -> {
