@@ -5,6 +5,8 @@ import java.util.Optional;
 
 interface PurchaserRepository{
 
+    long count();
+
     Optional<Purchaser> findById(Long id);
 
     Optional<Purchaser> findByOfficialName(String name);

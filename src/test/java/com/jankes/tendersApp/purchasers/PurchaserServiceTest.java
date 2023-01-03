@@ -18,7 +18,7 @@ public class PurchaserServiceTest {
     public void saveNewPurchaser() throws Exception{
         //given
         var repository = inMemoryPurchaserRepository();
-        int countBefore = repository.count();
+        long countBefore = repository.count();
         //and
         var purchaserDto = mock(PurchaserDto.class);
         when(purchaserDto.getId()).thenReturn(1L);
@@ -57,7 +57,7 @@ public class PurchaserServiceTest {
         //and
         var purchaser = purchaserWith(1,"test", "testowe", "testowe", TypeOfAccount.DEFENCE, "test@test.pl");
         repository.save(purchaser);
-        int countBefore = repository.count();
+        long countBefore = repository.count();
         //when
         purchaser.setEmail("test2@test.pl");
         //system under test
@@ -78,7 +78,7 @@ public class PurchaserServiceTest {
         //and
         var purchaser = purchaserWith(1,"test", "testowe", "testowe", TypeOfAccount.DEFENCE, "test@test.pl");
         repository.save(purchaser);
-        int countBefore = repository.count();
+        long countBefore = repository.count();
         //when
         purchaser.setTypeOfAccount(TypeOfAccount.EDUK12);
         //system under test
@@ -103,7 +103,7 @@ public class PurchaserServiceTest {
         //
         repository.save(purchaser);
         repository.save(purchaser2);
-        int repoSize = repository.count();
+        long repoSize = repository.count();
         //system under test
         var service = new PurchaserService(repository, mapper);
         //when
@@ -179,7 +179,7 @@ public class PurchaserServiceTest {
         private long index = 0;
         private Map<Long, Purchaser> map = new HashMap<>();
 
-        public int count(){
+        public long count(){
             return map.size();
         }
 
