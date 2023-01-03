@@ -122,8 +122,6 @@ public class TenderServiceTest {
         tenderRepository.save(tender);
         tenderRepository.save(tender2);
         tenderRepository.save(tender3);
-        //and
-        var factory = mock(TenderFactory.class);
         //system under test
         var service = new TenderService(tenderRepository, null, mapper, purchaserService);
         //when
@@ -150,8 +148,7 @@ public class TenderServiceTest {
         var tender = tenderWith(1, "test", "www.test.pl", "01-01-2022", "08-01-2022", items);
         tenderRepository.save(tender);
         int countBeforeTest = tenderRepository.count();
-        //and
-        var factory = mock(TenderFactory.class);
+
         //and
         var itemRepository = inMemoryTenderItemRepository();
         //updated tender
@@ -160,7 +157,6 @@ public class TenderServiceTest {
         //system under test
         var service = new TenderService(tenderRepository, itemRepository, mapper, purchaserService);
         var updatedTenderDto = mapper.toDto(updatedTender);
-        when(factory.from(updatedTenderDto)).thenReturn(updatedTender);
         //when
         service.saveTender(updatedTenderDto);
         //assert
@@ -186,7 +182,6 @@ public class TenderServiceTest {
         tenderRepository.save(tender);
         var tenderForUpdate = tenderWith(1, "test", "www.test.pl", "01-01-2022", "08-01-2022", itemsForUpdate);
         //and
-        var factory = mock(TenderFactory.class);
         //and
         var itemRepository = inMemoryTenderItemRepository();
         //updated tender
@@ -196,7 +191,6 @@ public class TenderServiceTest {
         //system under test
         var service = new TenderService(tenderRepository, itemRepository, mapper, purchaserService);
         var updatedTenderDto = mapper.toDto(tenderForUpdate);
-        when(factory.from(updatedTenderDto)).thenReturn(tenderForUpdate);
         //when
         service.saveTender(updatedTenderDto);
         //
