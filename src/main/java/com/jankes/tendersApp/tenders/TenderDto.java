@@ -10,13 +10,13 @@ import java.util.stream.Collectors;
 
 public class TenderDto {
 
-    private long id;
-    private String publicationDate;
-    private String bidDate;
-    private String link;
-    private String title;
-    private PurchaserDto purchaser;
-    private List<TenderItemDto> tenderItems;
+    private final long id;
+    private final String publicationDate;
+    private final String bidDate;
+    private final String link;
+    private final String title;
+    private final PurchaserDto purchaser;
+    private final List<TenderItemDto> tenderItems;
 
     public static Builder builder() {return new Builder();}
 
