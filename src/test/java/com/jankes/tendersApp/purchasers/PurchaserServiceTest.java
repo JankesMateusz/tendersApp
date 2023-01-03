@@ -1,5 +1,6 @@
 package com.jankes.tendersApp.purchasers;
 
+import com.jankes.tendersApp.tenders.Tender;
 import jdk.jfr.Description;
 import org.junit.jupiter.api.Test;
 
@@ -134,14 +135,39 @@ public class PurchaserServiceTest {
         assertThat(result.size()).isEqualTo(2);
     }
 
+    @Test
+    public void addTenderToPurchaser(){
+        //given
+        var repository = inMemoryPurchaserRepository();
+        //and
+        var mapper = new PurchaserMapper();
+        //and
+        var purchaser = purchaserWith(1,"test", "testowe", "testowe", TypeOfAccount.DEFENCE, "test@test.pl");
+        int count = purchaser.getTenders().size();
+        //and
+        var tender = mock(Tender.class);
+        when(tender.getPurchaser()).thenReturn(purchaser);
+        //
+        repository.save(purchaser);
+        //system under test
+        var service = new PurchaserService(repository, mapper);
+        //when
+        service.addTender(tender);
+        //
+        assertThat(purchaser.getTenders().size()).isNotEqualTo(count);
+    }
+
     private Purchaser purchaserWith(long id, String name, String city, String province, TypeOfAccount typeOfAccount, String email){
         var result = new Purchaser();
+        Set<Tender> tenders = new HashSet<>();
+
         result.setId(id);
         result.setOfficialName(name);
         result.setCity(city);
         result.setProvince(province);
         result.setTypeOfAccount(typeOfAccount);
         result.setEmail(email);
+        result.setTenders(tenders);
         return result;
     }
 

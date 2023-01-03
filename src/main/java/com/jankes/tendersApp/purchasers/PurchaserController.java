@@ -17,7 +17,7 @@ class PurchaserController {
         this.purchaserService = purchaserService;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/search/{id}")
     ResponseEntity<PurchaserDto> findPurchaser(@PathVariable long id){
         PurchaserDto purchaser = purchaserService.findPurchaser(id);
         if(purchaser == null){
@@ -26,8 +26,14 @@ class PurchaserController {
         return new ResponseEntity<>(purchaser, HttpStatus.OK);
     }
 
-    @GetMapping("/{name}")
-    ResponseEntity<List<PurchaserDto>> findPurchasersByName(@PathVariable String name){
+    @GetMapping("/all")
+    ResponseEntity<List<PurchaserDto>> findAllPurchasers(){
+        List<PurchaserDto> purchasers = purchaserService.findAllPurchasers();
+        return new ResponseEntity<>(purchasers, HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    ResponseEntity<List<PurchaserDto>> findPurchasersByName(@RequestParam(value = "name") String name){
         List<PurchaserDto> purchasers = purchaserService.findByName(name);
         if(purchasers.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

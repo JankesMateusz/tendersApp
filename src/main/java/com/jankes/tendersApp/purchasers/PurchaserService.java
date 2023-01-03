@@ -71,7 +71,10 @@ public class PurchaserService {
     }
 
     public void addTender(Tender toAdd){
-        Purchaser purchaser = purchaserRepository.findById(toAdd.getPurchaser().getId()).orElse(null);
-        if (purchaser != null) purchaser.addTender(toAdd);
+        purchaserRepository.findById(toAdd.getPurchaser().getId()).ifPresent(purchaser -> purchaser.addTender(toAdd));
+    }
+
+    public void removeTender(Tender toRemove){
+        purchaserRepository.findById(toRemove.getPurchaser().getId()).ifPresent(purchaser -> removeTender(toRemove));
     }
 }
