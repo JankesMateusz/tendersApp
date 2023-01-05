@@ -290,6 +290,7 @@ public class TenderServiceTest {
 
         var tenderForTest = new Tender();
         var purchaser = mock(com.jankes.tendersApp.purchasers.Purchaser.class);
+
         when(purchaser.getId()).thenReturn(1L);
         when(purchaser.getTypeOfAccount()).thenReturn(TypeOfAccount.DEFENCE);
         tenderForTest.setId(id);
@@ -299,6 +300,8 @@ public class TenderServiceTest {
         tenderForTest.setBidDate(LocalDate.parse(bidDate, DateTimeFormatter.ofPattern("dd-MM-yyyy")));
         tenderForTest.setTenderItems(items);
         tenderForTest.setPurchaser(purchaser);
+        tenderForTest.setBudget(TenderBudget.LESS_THAN_130000_PLN);
+        tenderForTest.setReportDate(LocalDate.parse("01-01-1999", DateTimeFormatter.ofPattern("dd-MM-yyyy")));
 
         return tenderForTest;
     }

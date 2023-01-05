@@ -17,6 +17,9 @@ public class TenderDto {
     private final String title;
     private final PurchaserDto purchaser;
     private final List<TenderItemDto> tenderItems;
+    private final String status;
+    private final String reportDate;
+    private final String budget;
 
     public static Builder builder() {return new Builder();}
 
@@ -28,6 +31,9 @@ public class TenderDto {
         this.link = builder.link;
         this.purchaser = builder.purchaser;
         this.tenderItems = builder.tenderItems;
+        this.status = builder.status;
+        this.reportDate = builder.reportDate;
+        this.budget = builder.budget;
     }
 
     public static class Builder {
@@ -38,6 +44,9 @@ public class TenderDto {
         private String title;
         private PurchaserDto purchaser;
         private List<TenderItemDto> tenderItems;
+        private String status;
+        private String reportDate;
+        private String budget;
 
         public Builder withId(long id){
             this.id = id;
@@ -78,6 +87,21 @@ public class TenderDto {
             return this;
         }
 
+        public Builder withStatus(String status){
+            this.status = status;
+            return this;
+        }
+
+        public Builder withReportDate(String reportDate){
+            this.reportDate = reportDate;
+            return this;
+        }
+
+        public Builder withBudget(String budget){
+            this.budget = budget;
+            return this;
+        }
+
         public TenderDto build() {return new TenderDto(this);}
     }
 
@@ -107,5 +131,17 @@ public class TenderDto {
 
     public List<TenderItemDto> getTenderItems() {
         return tenderItems;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public String getReportDate() {
+        return reportDate;
+    }
+
+    public String getBudget() {
+        return budget;
     }
 }

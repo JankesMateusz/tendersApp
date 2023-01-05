@@ -21,6 +21,9 @@ public class TenderMapper implements DtoMapper<TenderDto, Tender> {
                 .withLink(entity.getLink())
                 .withPurchaser(entity.getPurchaser())
                 .withTenderItems(entity.getTenderItems())
+                .withStatus(entity.getStatus().name())
+                .withReportDate(format(entity.getReportDate()))
+                .withBudget(entity.getBudget().name())
                 .build();
     }
 
@@ -38,6 +41,9 @@ public class TenderMapper implements DtoMapper<TenderDto, Tender> {
                         .stream()
                         .map(item -> new TenderItemMapper().toEntity(item))
                         .collect(Collectors.toSet()));
+        result.setStatus(Tender.Status.valueOf(dto.getStatus()));
+        result.setReportDate(LocalDate.parse(dto.getReportDate(), DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+        result.setBudget(TenderBudget.valueOf(dto.getBudget()));
         return result;
     }
 
