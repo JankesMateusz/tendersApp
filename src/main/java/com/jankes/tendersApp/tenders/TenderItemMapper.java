@@ -4,7 +4,7 @@ import com.jankes.tendersApp.common.DtoMapper;
 
 import java.util.Optional;
 
-class TenderItemMapper implements DtoMapper<TenderItemDto, TenderItem> {
+public class TenderItemMapper implements DtoMapper<TenderItemDto, TenderItem> {
 
     @Override
     public TenderItemDto toDto(TenderItem item) {

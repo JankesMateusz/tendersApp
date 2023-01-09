@@ -5,10 +5,12 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity(name = "tenders")
-public class Tender{
+public class Tender {
 
     public enum Status {
         PENDING, CONFIRMED, CANCELED, REFUSED
@@ -40,17 +42,18 @@ public class Tender{
     private TenderBudget budget;
     @OneToMany(mappedBy = "tender")
     private Set<TenderItem> tenderItems;
+    private String remarks;
 
-    public Tender(){
+    public Tender() {
         this.isTimeUp = false;
         this.status = Status.PENDING;
     }
 
-    void setId(Long id){
+    void setId(Long id) {
         this.id = id;
     }
 
-    Long getId(){
+    Long getId() {
         return this.id;
     }
 
@@ -62,7 +65,7 @@ public class Tender{
         this.purchaser = purchaser;
     }
 
-    String getTitle() {
+    public String getTitle() {
         return title;
     }
 
@@ -70,7 +73,7 @@ public class Tender{
         this.title = title;
     }
 
-    LocalDate getPublicationDate() {
+    public LocalDate getPublicationDate() {
         return publicationDate;
     }
 
@@ -78,7 +81,7 @@ public class Tender{
         this.publicationDate = publicationDate;
     }
 
-    LocalDate getBidDate() {
+    public LocalDate getBidDate() {
         return bidDate;
     }
 
@@ -86,7 +89,7 @@ public class Tender{
         this.bidDate = bidDate;
     }
 
-    String getLink() {
+    public String getLink() {
         return link;
     }
 
@@ -94,7 +97,7 @@ public class Tender{
         this.link = link;
     }
 
-    Set<TenderItem> getTenderItems() {
+    public Set<TenderItem> getTenderItems() {
         return tenderItems;
     }
 
@@ -174,15 +177,31 @@ public class Tender{
         this.budget = budget;
     }
 
-    void addTenderItem(TenderItem item){
+    void addTenderItem(TenderItem item) {
         tenderItems.add(item);
         item.setTender(this);
     }
-    void removeTenderItem(TenderItem item){
-        if(!tenderItems.contains(item)){
+
+    void removeTenderItem(TenderItem item) {
+        if (!tenderItems.contains(item)) {
             return;
         }
         tenderItems.remove(item);
         item.setTender(null);
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
+    public List<TenderItemDto> getTenderItemsDto(){
+        return tenderItems.stream()
+                .map(t -> new TenderItemMapper()
+                        .toDto(t))
+                .collect(Collectors.toList());
     }
 }

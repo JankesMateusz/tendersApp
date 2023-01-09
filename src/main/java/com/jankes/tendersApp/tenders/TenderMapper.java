@@ -24,6 +24,7 @@ public class TenderMapper implements DtoMapper<TenderDto, Tender> {
                 .withStatus(entity.getStatus().name())
                 .withReportDate(format(entity.getReportDate()))
                 .withBudget(entity.getBudget().name())
+                .withRemarks(entity.getRemarks())
                 .build();
     }
 
@@ -44,6 +45,7 @@ public class TenderMapper implements DtoMapper<TenderDto, Tender> {
         result.setStatus(Tender.Status.valueOf(dto.getStatus()));
         result.setReportDate(LocalDate.parse(dto.getReportDate(), DateTimeFormatter.ofPattern("dd-MM-yyyy")));
         result.setBudget(TenderBudget.valueOf(dto.getBudget()));
+        result.setRemarks(dto.getRemarks());
         return result;
     }
 

@@ -20,6 +20,7 @@ public class TenderDto {
     private final String status;
     private final String reportDate;
     private final String budget;
+    private final String remarks;
 
     public static Builder builder() {return new Builder();}
 
@@ -34,6 +35,7 @@ public class TenderDto {
         this.status = builder.status;
         this.reportDate = builder.reportDate;
         this.budget = builder.budget;
+        this.remarks = builder.remarks;
     }
 
     public static class Builder {
@@ -47,6 +49,7 @@ public class TenderDto {
         private String status;
         private String reportDate;
         private String budget;
+        private String remarks;
 
         public Builder withId(long id){
             this.id = id;
@@ -102,6 +105,11 @@ public class TenderDto {
             return this;
         }
 
+        public Builder withRemarks(String remarks){
+            this.remarks = remarks;
+            return this;
+        }
+
         public TenderDto build() {return new TenderDto(this);}
     }
 
@@ -143,5 +151,9 @@ public class TenderDto {
 
     public String getBudget() {
         return budget;
+    }
+
+    public String getRemarks(){
+        return remarks;
     }
 }

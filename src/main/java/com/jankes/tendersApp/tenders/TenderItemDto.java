@@ -1,6 +1,6 @@
 package com.jankes.tendersApp.tenders;
 
-class TenderItemDto {
+public class TenderItemDto {
 
     private final long id;
     private final String category;
