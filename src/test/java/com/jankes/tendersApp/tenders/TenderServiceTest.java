@@ -246,6 +246,16 @@ public class TenderServiceTest {
         }
 
         @Override
+        public List<Tender> findAllByReportDate(LocalDate date) {
+            return null;
+        }
+
+        @Override
+        public List<Tender> findAllByStartDateGreaterThanEqualAndEndDateLessThanEqual(LocalDate startDate, LocalDate endDate) {
+            return null;
+        }
+
+        @Override
         public Optional<Tender> findById(Long id) {
             return Optional.ofNullable(map.get(id));
         }

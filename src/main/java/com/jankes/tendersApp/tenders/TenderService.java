@@ -4,6 +4,7 @@ import com.jankes.tendersApp.purchasers.PurchaserService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -102,4 +103,11 @@ public class TenderService {
         });
     }
 
+    public List<Tender> findTendersByReportDate(LocalDate date){
+        return tenderRepository.findAllByReportDate(date);
+    }
+
+    public List<Tender> findTendersBetweenReportDates(LocalDate start, LocalDate end){
+        return tenderRepository.findAllByStartDateGreaterThanEqualAndEndDateLessThanEqual(start, end);
+    }
 }
