@@ -29,7 +29,7 @@ public class TenderServiceTest {
         //and
         var purchaserService = mock(PurchaserService.class);
         // system
-        var service = new TenderService(repository, null, mapper, purchaserService);
+        var service = new TenderService(repository, null, mapper, purchaserService, null);
         // when
         var result = service.findSingleTender(1L);
         // then
@@ -48,7 +48,7 @@ public class TenderServiceTest {
         //and
         var mapper = new TenderMapper();
         // system
-        var service = new TenderService(repository, null, mapper, null);
+        var service = new TenderService(repository, null, mapper, null, null);
         // assert
         Throwable t = catchThrowable(() -> service.findSingleTender(2L));
         assertThat(t).isInstanceOf(Exception.class);
@@ -71,7 +71,7 @@ public class TenderServiceTest {
         Set<TenderItem> items = new HashSet<>();
         var tender = tenderWith(1L, "test", "www.test.pl", "01-01-2022", "08-01-2022", items);
         //system under test:
-        var toTest = new TenderService(tenderRepository, tenderItemRepositoryMock, mapper, purchaserService);
+        var toTest = new TenderService(tenderRepository, tenderItemRepositoryMock, mapper, purchaserService, null);
         //when
         toTest.saveTender(mapper.toDto(tender));
         //test
@@ -96,7 +96,7 @@ public class TenderServiceTest {
         //updated tender
         var updatedTender = tenderWith(1, "test 2", "www.test2.pl", "01-01-2022", "08-01-2022", items);
         //system under test
-        var service = new TenderService(tenderRepository, null, mapper, purchaserService);
+        var service = new TenderService(tenderRepository, null, mapper, purchaserService, null);
         //when
         service.saveTender(mapper.toDto(updatedTender));
         //assert
@@ -123,7 +123,7 @@ public class TenderServiceTest {
         tenderRepository.save(tender2);
         tenderRepository.save(tender3);
         //system under test
-        var service = new TenderService(tenderRepository, null, mapper, purchaserService);
+        var service = new TenderService(tenderRepository, null, mapper, purchaserService, null);
         //when
         var result = service.findAllTendersByTitle("test");
 
@@ -155,7 +155,7 @@ public class TenderServiceTest {
         itemsForUpdate.add(tenderItemWith(1L, ItemCategory.NOTEBOOK, 5));
         var updatedTender = tenderWith(1, "test 2", "www.test2.pl", "01-01-2022", "08-01-2022", itemsForUpdate);
         //system under test
-        var service = new TenderService(tenderRepository, itemRepository, mapper, purchaserService);
+        var service = new TenderService(tenderRepository, itemRepository, mapper, purchaserService, null);
         var updatedTenderDto = mapper.toDto(updatedTender);
         //when
         service.saveTender(updatedTenderDto);
@@ -189,7 +189,7 @@ public class TenderServiceTest {
         itemsForUpdate.add(tenderItemWith(2L, ItemCategory.AIO, 100));
         itemsForUpdate.add(tenderItemWith(3L, ItemCategory.MFP, 10));
         //system under test
-        var service = new TenderService(tenderRepository, itemRepository, mapper, purchaserService);
+        var service = new TenderService(tenderRepository, itemRepository, mapper, purchaserService, null);
         var updatedTenderDto = mapper.toDto(tenderForUpdate);
         //when
         service.saveTender(updatedTenderDto);
@@ -243,16 +243,6 @@ public class TenderServiceTest {
             }
             map.put(entity.getId(), entity);
             return entity;
-        }
-
-        @Override
-        public List<Tender> findAllByReportDate(LocalDate date) {
-            return null;
-        }
-
-        @Override
-        public List<Tender> findAllByStartDateGreaterThanEqualAndEndDateLessThanEqual(LocalDate startDate, LocalDate endDate) {
-            return null;
         }
 
         @Override
