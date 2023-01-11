@@ -49,11 +49,11 @@ public class Tender {
         this.status = Status.PENDING;
     }
 
-    void setId(Long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    Long getId() {
+    public Long getId() {
         return this.id;
     }
 
@@ -69,7 +69,7 @@ public class Tender {
         return title;
     }
 
-    void setTitle(String title) {
+    public void setTitle(String title) {
         this.title = title;
     }
 
@@ -77,7 +77,7 @@ public class Tender {
         return publicationDate;
     }
 
-    void setPublicationDate(LocalDate publicationDate) {
+    public void setPublicationDate(LocalDate publicationDate) {
         this.publicationDate = publicationDate;
     }
 
@@ -85,7 +85,7 @@ public class Tender {
         return bidDate;
     }
 
-    void setBidDate(LocalDate bidDate) {
+    public void setBidDate(LocalDate bidDate) {
         this.bidDate = bidDate;
     }
 
@@ -93,7 +93,7 @@ public class Tender {
         return link;
     }
 
-    void setLink(String link) {
+    public void setLink(String link) {
         this.link = link;
     }
 

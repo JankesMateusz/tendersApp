@@ -1,9 +1,10 @@
 package com.jankes.tendersApp.tenders;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-interface TenderRepository {
+public interface TenderRepository {
 
     List<Tender> findAllByPurchaserId(Long id);
 
@@ -14,4 +15,8 @@ interface TenderRepository {
     Optional<Tender> findById(Long id);
 
     List<Tender> findAllByTitleIgnoreCaseContaining(String phrase);
+
+    List<Tender> findAllByReportDate(LocalDate date);
+
+    List<Tender> findAllByStartDateGreaterThanEqualAndEndDateLessThanEqual(LocalDate startDate, LocalDate endDate);
 }

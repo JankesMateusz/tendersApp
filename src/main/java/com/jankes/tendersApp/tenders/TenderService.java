@@ -17,14 +17,12 @@ public class TenderService {
     private final TenderItemRepository tenderItemRepository;
     private final TenderMapper mapper;
     private final PurchaserService purchaserService;
-    TenderQueryRepository tenderQueryRepository;
 
-    public TenderService(TenderRepository tenderRepository, TenderItemRepository tenderItemRepository, TenderMapper mapper, PurchaserService purchaserService, TenderQueryRepository tenderQueryRepository){
+    public TenderService(TenderRepository tenderRepository, TenderItemRepository tenderItemRepository, TenderMapper mapper, PurchaserService purchaserService){
         this.tenderRepository = tenderRepository;
         this.tenderItemRepository = tenderItemRepository;
         this.mapper = mapper;
         this.purchaserService = purchaserService;
-        this.tenderQueryRepository = tenderQueryRepository;
     }
 
 
@@ -106,10 +104,10 @@ public class TenderService {
     }
 
     public List<Tender> findTendersByReportDate(LocalDate date){
-        return tenderQueryRepository.findAllByReportDate(date);
+        return tenderRepository.findAllByReportDate(date);
     }
 
     public List<Tender> findTendersBetweenReportDates(LocalDate start, LocalDate end){
-        return tenderQueryRepository.findAllByStartDateGreaterThanEqualAndEndDateLessThanEqual(start, end);
+        return tenderRepository.findAllByStartDateGreaterThanEqualAndEndDateLessThanEqual(start, end);
     }
 }
