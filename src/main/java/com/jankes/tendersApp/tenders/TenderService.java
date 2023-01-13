@@ -108,6 +108,6 @@ public class TenderService {
     }
 
     public List<Tender> findTendersBetweenReportDates(LocalDate start, LocalDate end){
-        return tenderRepository.findAllByStartDateGreaterThanEqualAndEndDateLessThanEqual(start, end);
+        return tenderRepository.findAllByReportDateGreaterThanEqualAndReportDateLessThanEqual(start, end);
     }
 }

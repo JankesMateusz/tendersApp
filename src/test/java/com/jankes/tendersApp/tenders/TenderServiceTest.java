@@ -60,7 +60,7 @@ public class TenderServiceTest {
     public void saveNewTenderToRepository() {
         //given
         InMemoryTenderRepository tenderRepository = inMemoryTenderRepository();
-        int countBeforeTest = tenderRepository.count();
+        long countBeforeTest = tenderRepository.count();
         //and
         var mapper = new TenderMapper();
         //and
@@ -88,7 +88,7 @@ public class TenderServiceTest {
         var tender = tenderWith(1, "test", "www.test.pl", "01-01-2022", "08-01-2022", items);
         //and
         tenderRepository.save(tender);
-        int countBeforeTest = tenderRepository.count();
+        long countBeforeTest = tenderRepository.count();
         //and
         var mapper = new TenderMapper();
         //and
@@ -147,7 +147,7 @@ public class TenderServiceTest {
         //and
         var tender = tenderWith(1, "test", "www.test.pl", "01-01-2022", "08-01-2022", items);
         tenderRepository.save(tender);
-        int countBeforeTest = tenderRepository.count();
+        long countBeforeTest = tenderRepository.count();
 
         //and
         var itemRepository = inMemoryTenderItemRepository();
@@ -208,7 +208,7 @@ public class TenderServiceTest {
         private long index = 0;
         private Map<Long, Tender> map = new HashMap<>();
 
-        public int count() {
+        public long count() {
             return map.values().size();
         }
 
@@ -236,7 +236,7 @@ public class TenderServiceTest {
         }
 
         @Override
-        public List<Tender> findAllByStartDateGreaterThanEqualAndEndDateLessThanEqual(LocalDate startDate, LocalDate endDate) {
+        public List<Tender> findAllByReportDateGreaterThanEqualAndReportDateLessThanEqual(LocalDate startDate, LocalDate endDate) {
             return null;
         }
 

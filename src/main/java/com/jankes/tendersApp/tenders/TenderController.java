@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController()
 @RequestMapping("/tenders")
@@ -23,6 +24,15 @@ class TenderController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(tender, HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    ResponseEntity<List<TenderDto>> findTenderByTitle(@RequestParam(value = "name") String name){
+        List<TenderDto> tenders = tenderService.findAllTendersByTitle(name);
+        if(tenders.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(tenders, HttpStatus.OK);
     }
 
     @PostMapping

@@ -6,6 +6,8 @@ import java.util.Optional;
 
 public interface TenderRepository {
 
+    long count();
+
     List<Tender> findAllByPurchaserId(Long id);
 
     boolean existsById(Long id);
@@ -18,5 +20,5 @@ public interface TenderRepository {
 
     List<Tender> findAllByReportDate(LocalDate date);
 
-    List<Tender> findAllByStartDateGreaterThanEqualAndEndDateLessThanEqual(LocalDate startDate, LocalDate endDate);
+    List<Tender> findAllByReportDateGreaterThanEqualAndReportDateLessThanEqual(LocalDate startDate, LocalDate endDate);
 }

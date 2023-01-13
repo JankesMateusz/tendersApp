@@ -57,7 +57,7 @@ public class ReportServiceTest {
         private long index = 0;
         private Map<Long, Tender> map = new HashMap<>();
 
-        public int count() {
+        public long count() {
             return map.values().size();
         }
 
@@ -87,7 +87,7 @@ public class ReportServiceTest {
         }
 
         @Override
-        public List<Tender> findAllByStartDateGreaterThanEqualAndEndDateLessThanEqual(LocalDate startDate, LocalDate endDate) {
+        public List<Tender> findAllByReportDateGreaterThanEqualAndReportDateLessThanEqual(LocalDate startDate, LocalDate endDate) {
             return null;
         }
 
