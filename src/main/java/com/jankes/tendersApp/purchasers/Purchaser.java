@@ -5,7 +5,8 @@ import com.jankes.tendersApp.tenders.Tender;
 import javax.persistence.*;
 import java.util.Set;
 
-@Entity(name = "purchasers")
+@Entity
+@Table(name = "purchasers")
 public class Purchaser {
 
     @Id

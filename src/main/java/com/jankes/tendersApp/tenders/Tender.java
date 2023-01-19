@@ -9,7 +9,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Entity(name = "tenders")
+@Entity
+@Table(name = "tenders")
 public class Tender {
 
     public enum Status {
