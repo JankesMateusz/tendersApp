@@ -25,6 +25,52 @@ public class User implements UserDetails {
     public User() {
     }
 
+    private User(Builder builder){
+        this.firstName = builder.firstName;
+        this.lastName = builder.lastName;
+        this.email = builder.email;
+        this.password = builder.password;
+        this.role = builder.role;
+    }
+
+    public static class Builder{
+
+        private String firstName;
+        private String lastName;
+        private String email;
+        private String password;
+        private Role role;
+
+        public Builder withFirstName(String firstName){
+            this. firstName = firstName;
+            return this;
+        }
+
+        public Builder withLastName(String lastName){
+            this.lastName = lastName;
+            return this;
+        }
+
+        public Builder withEmail(String email){
+            this.email = email;
+            return this;
+        }
+
+        public Builder withPassword(String password){
+            this.password = password;
+            return this;
+        }
+
+        public Builder withRole(Role role){
+            this.role = role;
+            return this;
+        }
+
+        public User build(){
+            return new User(this);
+        }
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
