@@ -10,22 +10,24 @@ import java.util.stream.Collectors;
 
 public class PurchaserDto {
 
-    private final long id;
-    private final String officialName;
-    private final String city;
-    private final String province;
-    private final String address;
-    private final String zipCode;
-    private final String personOfContactFirstName;
-    private final String typeOfAccount;
-    private final String personOfContactLastName;
-    private final String phone;
-    private final String email;
-    private final List<TenderDto> tenders;
+    private long id;
+    private String officialName;
+    private String city;
+    private String province;
+    private String address;
+    private String zipCode;
+    private String personOfContactFirstName;
+    private String typeOfAccount;
+    private String personOfContactLastName;
+    private String phone;
+    private String email;
+    private List<TenderDto> tenders;
 
     public static Builder builder() {
         return new Builder();
     }
+
+    public PurchaserDto(){}
 
     public PurchaserDto(Builder builder){
         this.id = builder.id;

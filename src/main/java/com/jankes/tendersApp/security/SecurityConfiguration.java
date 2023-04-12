@@ -26,16 +26,19 @@ public class SecurityConfiguration  {
                 .csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/auth/**")
-                .permitAll()
-                .anyRequest()
-                .authenticated()
+                //.antMatchers("/auth/**", "/h2-console/**")
+                //.permitAll()
+                .anyRequest().permitAll()
+                //.authenticated()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authenticationProvider(authenticationProvider)
-                .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .headers()
+                .frameOptions()
+                .disable();
 
         return http.build();
     }
