@@ -1,5 +1,7 @@
 package com.jankes.tendersApp.tenders;
 
+import com.jankes.tendersApp.purchasers.PurchaserDto;
+import com.jankes.tendersApp.purchasers.PurchaserMapper;
 import com.jankes.tendersApp.purchasers.PurchaserService;
 import org.springframework.stereotype.Service;
 
@@ -16,31 +18,37 @@ public class TenderService {
     private final TenderRepository tenderRepository;
     private final TenderItemRepository tenderItemRepository;
     private final TenderMapper mapper;
+
+    private final TenderItemMapper tenderItemMapper;
     private final PurchaserService purchaserService;
 
-    public TenderService(TenderRepository tenderRepository, TenderItemRepository tenderItemRepository, TenderMapper mapper, PurchaserService purchaserService){
+    private final PurchaserMapper purchaserMapper;
+
+    public TenderService(TenderRepository tenderRepository, TenderItemRepository tenderItemRepository, TenderMapper mapper, TenderItemMapper tenderItemMapper, PurchaserService purchaserService, PurchaserMapper purchaserMapper) {
         this.tenderRepository = tenderRepository;
         this.tenderItemRepository = tenderItemRepository;
         this.mapper = mapper;
+        this.tenderItemMapper = tenderItemMapper;
         this.purchaserService = purchaserService;
+        this.purchaserMapper = purchaserMapper;
     }
 
 
-    public TenderDto findSingleTender(Long id){
+    public TenderDto findSingleTender(Long id) {
         return tenderRepository.findById(id)
                 .map(mapper::toDto)
                 .orElseThrow(
                         () -> new IllegalStateException("Tender not found"));
     }
 
-    public List<TenderDto> findAllTendersForPurchaser(Long id){
+    public List<TenderDto> findAllTendersForPurchaser(Long id) {
         return tenderRepository.findAllByPurchaserId(id)
                 .stream()
                 .map(mapper::toDto)
                 .collect(Collectors.toList());
     }
 
-    public List<TenderDto> findAllTendersByTitle(String phrase){
+    public List<TenderDto> findAllTendersByTitle(String phrase) {
         return tenderRepository.findAllByTitleIgnoreCaseContaining(phrase)
                 .stream()
                 .map(mapper::toDto)
@@ -48,18 +56,26 @@ public class TenderService {
     }
 
     @Transactional
-    TenderDto saveTender(TenderDto dtoToSave) {
+    TenderDto saveTender(TenderDto dtoToSave, PurchaserDto purchaserDto, List<TenderItemDto> items) {
         var toSave = mapper.toEntity(dtoToSave);
-        if(tenderRepository.existsById(toSave.getId())){
+        var purchaser = purchaserMapper.toEntity(purchaserDto);
+        var tenderItems = items.stream().map(tenderItemMapper::toEntity).toList();
+        tenderItems.forEach(t -> {
+            t.setTender(toSave);
+            tenderItemRepository.save(t);
+            toSave.addTenderItem(t);
+        });
+        if (tenderRepository.existsById(toSave.getId())) {
             var result = updateTender(toSave);
             return mapper.toDto(result);
         }
+        toSave.setPurchaser(purchaser);
         var result = tenderRepository.save(toSave);
         purchaserService.addTender(toSave);
         return mapper.toDto(result);
     }
 
-    private Tender updateTender(Tender toSave){
+    private Tender updateTender(Tender toSave) {
         return tenderRepository.findById(toSave.getId()).map(existingTender -> {
             Set<TenderItem> itemsToRemove = new HashSet<>();
             existingTender.setLink(toSave.getLink());
@@ -82,7 +98,7 @@ public class TenderService {
                                     () -> itemsToRemove.add(existingItem)
                             )
                     );
-            itemsToRemove.forEach(toRemove ->{
+            itemsToRemove.forEach(toRemove -> {
                 existingTender.removeTenderItem(toRemove);
                 tenderItemRepository.delete(toRemove);
             });
@@ -95,7 +111,7 @@ public class TenderService {
             return existingTender;
         }).orElseGet(() -> {
             toSave.getTenderItems().forEach(item -> {
-                if(item.getTender() == null){
+                if (item.getTender() == null) {
                     item.setTender(toSave);
                 }
             });
@@ -103,11 +119,11 @@ public class TenderService {
         });
     }
 
-    public List<Tender> findTendersByReportDate(LocalDate date){
+    public List<Tender> findTendersByReportDate(LocalDate date) {
         return tenderRepository.findAllByReportDate(date);
     }
 
-    public List<Tender> findTendersBetweenReportDates(LocalDate start, LocalDate end){
+    public List<Tender> findTendersBetweenReportDates(LocalDate start, LocalDate end) {
         return tenderRepository.findAllByReportDateGreaterThanEqualAndReportDateLessThanEqual(start, end);
     }
 }

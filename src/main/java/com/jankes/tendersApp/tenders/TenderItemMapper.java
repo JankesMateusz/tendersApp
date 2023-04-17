@@ -1,9 +1,11 @@
 package com.jankes.tendersApp.tenders;
 
 import com.jankes.tendersApp.common.DtoMapper;
+import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
+@Component
 public class TenderItemMapper implements DtoMapper<TenderItemDto, TenderItem> {
 
     @Override

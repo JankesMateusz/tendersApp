@@ -1,5 +1,6 @@
 package com.jankes.tendersApp.tenders;
 
+import com.jankes.tendersApp.purchasers.PurchaserDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,8 +37,8 @@ class TenderController {
     }
 
     @PostMapping
-    ResponseEntity<TenderDto>  create(@RequestBody TenderDto toCreate) {
-        TenderDto  result = tenderService.saveTender(toCreate);
+    ResponseEntity<TenderDto> create(@RequestBody TenderRequest toCreate) {
+        TenderDto  result = tenderService.saveTender(toCreate.getTenderDto(), toCreate.getPurchaserDto(), toCreate.getTenderItems());
         return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
     }
 
@@ -46,7 +47,7 @@ class TenderController {
         if(id != toUpdate.getId() && toUpdate.getId() != 0){
             throw new IllegalStateException("Id in URL is not equal to Id in request: " + id + " != " + toUpdate.getId());
         }
-        tenderService.saveTender(toUpdate);
+        //tenderService.saveTender(toUpdate);
         return ResponseEntity.noContent().build();
     }
 }

@@ -2,20 +2,22 @@ package com.jankes.tendersApp.tenders;
 
 public class TenderItemDto {
 
-    private final long id;
-    private final String category;
-    private final int quantity;
-    private final int cpuQuantity;
-    private final String os;
-    private final String office;
-    private final String remarks;
-    private final int taskNumber;
+    private long id;
+    private String category;
+    private int quantity;
+    private int cpuQuantity;
+    private String os;
+    private String office;
+    private String remarks;
+    private int taskNumber;
 
     public static Builder builder(){
         return new Builder();
     }
 
-    private TenderItemDto(Builder builder){
+    public TenderItemDto(){}
+
+    public TenderItemDto(Builder builder){
         this.id = builder.id;
         this.category = builder.category;
         this.quantity = builder.quantity;

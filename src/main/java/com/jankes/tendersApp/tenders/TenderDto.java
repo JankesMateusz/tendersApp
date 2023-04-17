@@ -10,19 +10,21 @@ import java.util.stream.Collectors;
 
 public class TenderDto {
 
-    private final long id;
-    private final String publicationDate;
-    private final String bidDate;
-    private final String link;
-    private final String title;
-    private final PurchaserDto purchaser;
-    private final List<TenderItemDto> tenderItems;
-    private final String status;
-    private final String reportDate;
-    private final String budget;
-    private final String remarks;
+    private long id;
+    private String publicationDate;
+    private String bidDate;
+    private String link;
+    private String title;
+    private PurchaserDto purchaser;
+    private List<TenderItemDto> tenderItems;
+    private String status;
+    private String reportDate;
+    private String budget;
+    private String remarks;
 
     public static Builder builder() {return new Builder();}
+
+    public TenderDto(){}
 
     public TenderDto(Builder builder) {
         this.id = builder.id;

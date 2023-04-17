@@ -41,7 +41,7 @@ public class ReportServiceTest {
         //and
         var mapper = new ReportMapper();
         //and
-        var tenderService = new TenderService(null, null, null, null);
+        var tenderService = new TenderService(null, null, null, tenderItemMapper, null, purchaserMapper);
         //system under test
         ReportService reportService = new ReportService(tenderService, mapper);
         //when
