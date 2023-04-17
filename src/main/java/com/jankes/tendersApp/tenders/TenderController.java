@@ -38,7 +38,7 @@ class TenderController {
 
     @PostMapping
     ResponseEntity<TenderDto> create(@RequestBody TenderRequest toCreate) {
-        TenderDto  result = tenderService.saveTender(toCreate.getTenderDto(), toCreate.getPurchaserDto(), toCreate.getTenderItems());
+        TenderDto  result = tenderService.saveTender(toCreate.getTenderDto(), toCreate.getPurchaserId(), toCreate.getTenderItems());
         return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
     }
 

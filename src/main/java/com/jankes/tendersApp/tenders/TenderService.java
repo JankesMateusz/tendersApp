@@ -18,10 +18,8 @@ public class TenderService {
     private final TenderRepository tenderRepository;
     private final TenderItemRepository tenderItemRepository;
     private final TenderMapper mapper;
-
     private final TenderItemMapper tenderItemMapper;
     private final PurchaserService purchaserService;
-
     private final PurchaserMapper purchaserMapper;
 
     public TenderService(TenderRepository tenderRepository, TenderItemRepository tenderItemRepository, TenderMapper mapper, TenderItemMapper tenderItemMapper, PurchaserService purchaserService, PurchaserMapper purchaserMapper) {
@@ -56,22 +54,28 @@ public class TenderService {
     }
 
     @Transactional
-    TenderDto saveTender(TenderDto dtoToSave, PurchaserDto purchaserDto, List<TenderItemDto> items) {
+    TenderDto saveTender(TenderDto dtoToSave, Long purchaserId, List<TenderItemDto> items) {
         var toSave = mapper.toEntity(dtoToSave);
-        var purchaser = purchaserMapper.toEntity(purchaserDto);
-        var tenderItems = items.stream().map(tenderItemMapper::toEntity).toList();
-        tenderItems.forEach(t -> {
-            t.setTender(toSave);
-            tenderItemRepository.save(t);
-            toSave.addTenderItem(t);
-        });
+        var purchaser = purchaserMapper.toEntity(purchaserService.findPurchaser(purchaserId));
+
         if (tenderRepository.existsById(toSave.getId())) {
             var result = updateTender(toSave);
             return mapper.toDto(result);
         }
         toSave.setPurchaser(purchaser);
+        toSave.setPersonOfContactFirstName(purchaser.getPersonOfContactFirstName());
+        toSave.setPersonOfContactLastName(purchaser.getPersonOfContactLastName());
+        toSave.setEmail(purchaser.getEmail());
+        toSave.setPhoneNumber(purchaser.getPhoneNumber());
+
         var result = tenderRepository.save(toSave);
-        purchaserService.addTender(toSave);
+        var tenderItems = items.stream().map(tenderItemMapper::toEntity).toList();
+
+        tenderItems.forEach(t -> {
+            t.setTender(result);
+            tenderItemRepository.save(t);
+        });
+
         return mapper.toDto(result);
     }
 

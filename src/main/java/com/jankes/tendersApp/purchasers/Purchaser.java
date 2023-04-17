@@ -137,4 +137,21 @@ public class Purchaser {
     public void setTenders(Set<Tender> tenders) {
         this.tenders = tenders;
     }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (!(o instanceof Purchaser other))
+            return false;
+
+        return this.getId() != null &&
+                this.getId().equals(other.getId());
+    }
 }

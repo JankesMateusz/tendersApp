@@ -14,6 +14,7 @@ public class TenderDto {
     private String publicationDate;
     private String bidDate;
     private String link;
+    private String bidNumber;
     private String title;
     private PurchaserDto purchaser;
     private List<TenderItemDto> tenderItems;
@@ -32,6 +33,7 @@ public class TenderDto {
         this.bidDate = builder.bidDate;
         this.title = builder.title;
         this.link = builder.link;
+        this.bidNumber = builder.bidNumber;
         this.purchaser = builder.purchaser;
         this.tenderItems = builder.tenderItems;
         this.status = builder.status;
@@ -45,6 +47,7 @@ public class TenderDto {
         private String publicationDate;
         private String bidDate;
         private String link;
+        private String bidNumber;
         private String title;
         private PurchaserDto purchaser;
         private List<TenderItemDto> tenderItems;
@@ -70,6 +73,11 @@ public class TenderDto {
 
         public Builder withLink(String link){
             this.link = link;
+            return this;
+        }
+
+        public Builder withBidNumber(String bidNumber){
+            this.bidNumber = bidNumber;
             return this;
         }
 
@@ -130,6 +138,8 @@ public class TenderDto {
     public String getLink() {
         return link;
     }
+
+    public String getBidNumber(){return bidNumber;}
 
     public String getTitle() {
         return title;

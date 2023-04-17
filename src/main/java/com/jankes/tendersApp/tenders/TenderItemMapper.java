@@ -28,10 +28,11 @@ public class TenderItemMapper implements DtoMapper<TenderItemDto, TenderItem> {
         item.setId(dto.getId());
         item.setCategory(ItemCategory.valueOf(dto.getCategory().toUpperCase()));
         item.setQuantity(dto.getQuantity());
-        item.setOs(item.getOs());
-        item.setOffice(item.getOffice());
-        item.setRemarks(item.getRemarks());
-        item.setTaskNumber(item.getTaskNumber());
+        item.setCpuQuantity(dto.getCpuQuantity());
+        item.setOs(dto.getOs());
+        item.setOffice(dto.getOffice());
+        item.setRemarks(dto.getRemarks());
+        item.setTaskNumber(dto.getTaskNumber());
 
         return item;
     }

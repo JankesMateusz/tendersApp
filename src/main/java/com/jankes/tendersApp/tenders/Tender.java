@@ -205,4 +205,20 @@ public class Tender {
                         .toDto(t))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (!(o instanceof Tender other))
+            return false;
+
+        return this.getId() != null &&
+                this.getId().equals(other.getId());
+    }
 }

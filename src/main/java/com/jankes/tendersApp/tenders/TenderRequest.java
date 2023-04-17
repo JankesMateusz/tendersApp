@@ -6,9 +6,18 @@ import java.util.List;
 
 public class TenderRequest {
 
+    Long purchaserId;
     TenderDto tenderDto;
     List<TenderItemDto> tenderItems;
     PurchaserDto purchaserDto;
+
+    public Long getPurchaserId() {
+        return purchaserId;
+    }
+
+    public void setPurchaserId(Long id) {
+        this.purchaserId = id;
+    }
 
     public TenderDto getTenderDto() {
         return tenderDto;

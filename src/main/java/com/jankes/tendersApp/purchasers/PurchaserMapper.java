@@ -25,7 +25,7 @@ public class PurchaserMapper implements DtoMapper<PurchaserDto, Purchaser>{
                 .withPhone(entity.getPhoneNumber())
                 .withTypeOfAccount(entity.getTypeOfAccount().name().toLowerCase())
                 .withEmail(entity.getEmail())
-                .withTenders(Optional.ofNullable(entity.getTenders()).orElse(new HashSet<>()))
+                //.withTenders(Optional.ofNullable(entity.getTenders()).orElse(new HashSet<>()))
                 .build();
     }
 
@@ -43,11 +43,11 @@ public class PurchaserMapper implements DtoMapper<PurchaserDto, Purchaser>{
         result.setPhoneNumber(dto.getPhone());
         result.setTypeOfAccount(TypeOfAccount.valueOf(dto.getTypeOfAccount().toUpperCase()));
         result.setEmail(dto.getEmail());
-        result.setTenders(
-                dto.getTenders()
-                .stream()
-                .map(t -> new TenderMapper().toEntity(t))
-                        .collect(Collectors.toSet()));
+//        result.setTenders(
+//                dto.getTenders()
+//                .stream()
+//                .map(t -> new TenderMapper().toEntity(t))
+//                        .collect(Collectors.toSet()));
         return result;
     }
 }

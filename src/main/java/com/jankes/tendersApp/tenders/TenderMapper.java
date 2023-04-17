@@ -19,8 +19,9 @@ public class TenderMapper implements DtoMapper<TenderDto, Tender> {
                 .withBidDate(format(entity.getBidDate()))
                 .withTitle(entity.getTitle())
                 .withLink(entity.getLink())
-                .withPurchaser(entity.getPurchaser())
-                .withTenderItems(entity.getTenderItems())
+                .withBidNumber(entity.getBidNumber())
+                //.withPurchaser(entity.getPurchaser())
+                //.withTenderItems(entity.getTenderItems())
                 .withStatus(entity.getStatus().name())
                 .withReportDate(format(entity.getReportDate()))
                 .withBudget(entity.getBudget().name())
@@ -36,12 +37,13 @@ public class TenderMapper implements DtoMapper<TenderDto, Tender> {
         result.setBidDate(LocalDate.parse(dto.getBidDate(), DateTimeFormatter.ofPattern("dd-MM-yyyy")));
         result.setTitle(dto.getTitle());
         result.setLink(dto.getLink());
-        result.setPurchaser(new PurchaserMapper().toEntity(dto.getPurchaser()));
-        result.setTenderItems(
-                dto.getTenderItems()
-                        .stream()
-                        .map(item -> new TenderItemMapper().toEntity(item))
-                        .collect(Collectors.toSet()));
+        result.setBidNumber(dto.getBidNumber());
+//        result.setPurchaser(new PurchaserMapper().toEntity(dto.getPurchaser()));
+//        result.setTenderItems(
+//                dto.getTenderItems()
+//                        .stream()
+//                        .map(item -> new TenderItemMapper().toEntity(item))
+//                        .collect(Collectors.toSet()));
         result.setStatus(Tender.Status.valueOf(dto.getStatus()));
         result.setReportDate(LocalDate.parse(dto.getReportDate(), DateTimeFormatter.ofPattern("dd-MM-yyyy")));
         result.setBudget(TenderBudget.valueOf(dto.getBudget()));

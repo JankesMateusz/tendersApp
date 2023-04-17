@@ -2,10 +2,7 @@ package com.jankes.tendersApp.tenders;
 
 import com.jankes.tendersApp.common.BaseEntity;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "tender_items")
@@ -14,6 +11,7 @@ class TenderItem extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "tender_id")
     private Tender tender;
+    @Enumerated(EnumType.STRING)
     private ItemCategory category;
     private Integer quantity;
     private Integer cpuQuantity;
@@ -101,5 +99,21 @@ class TenderItem extends BaseEntity {
 
     public void setTaskNumber(Integer taskNumber) {
         this.taskNumber = taskNumber;
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (!(o instanceof TenderItem other))
+            return false;
+
+        return this.getId() != null &&
+                this.getId().equals(other.getId());
     }
 }
