@@ -1,13 +1,14 @@
 package com.jankes.tendersApp.tenders;
 
-import com.jankes.tendersApp.common.BaseEntity;
-
 import javax.persistence.*;
 
 @Entity
 @Table(name = "tender_items")
-class TenderItem extends BaseEntity {
+class TenderItem {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @ManyToOne
     @JoinColumn(name = "tender_id")
     private Tender tender;
@@ -32,6 +33,8 @@ class TenderItem extends BaseEntity {
         this.remarks = remarks;
         this.taskNumber = taskNumber;
     }
+
+    public Long getId() {return this.id;}
 
     public void setId(Long id){
         this.id = id;
