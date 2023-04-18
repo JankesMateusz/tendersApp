@@ -16,8 +16,8 @@ public class TenderDto {
     private String link;
     private String bidNumber;
     private String title;
-    private PurchaserDto purchaser;
-    private List<TenderItemDto> tenderItems;
+//    private PurchaserDto purchaser;
+//    private List<TenderItemDto> tenderItems;
     private String status;
     private String reportDate;
     private String budget;
@@ -34,8 +34,8 @@ public class TenderDto {
         this.title = builder.title;
         this.link = builder.link;
         this.bidNumber = builder.bidNumber;
-        this.purchaser = builder.purchaser;
-        this.tenderItems = builder.tenderItems;
+//        this.purchaser = builder.purchaser;
+//        this.tenderItems = builder.tenderItems;
         this.status = builder.status;
         this.reportDate = builder.reportDate;
         this.budget = builder.budget;
@@ -49,8 +49,8 @@ public class TenderDto {
         private String link;
         private String bidNumber;
         private String title;
-        private PurchaserDto purchaser;
-        private List<TenderItemDto> tenderItems;
+//        private PurchaserDto purchaser;
+//        private List<TenderItemDto> tenderItems;
         private String status;
         private String reportDate;
         private String budget;
@@ -86,19 +86,19 @@ public class TenderDto {
             return this;
         }
 
-        public Builder withPurchaser(Purchaser purchaser){
-            this.purchaser = new PurchaserMapper().toDto(purchaser);
-            return this;
-        }
-
-        public Builder withTenderItems(Set<TenderItem> tenderItems){
-            this.tenderItems = tenderItems.stream()
-                    .map(item -> new TenderItemMapper()
-                            .toDto(item))
-                    .collect(
-                            Collectors.toList());
-            return this;
-        }
+//        public Builder withPurchaser(Purchaser purchaser){
+//            this.purchaser = new PurchaserMapper().toDto(purchaser);
+//            return this;
+//        }
+//
+//        public Builder withTenderItems(Set<TenderItem> tenderItems){
+//            this.tenderItems = tenderItems.stream()
+//                    .map(item -> new TenderItemMapper()
+//                            .toDto(item))
+//                    .collect(
+//                            Collectors.toList());
+//            return this;
+//        }
 
         public Builder withStatus(String status){
             this.status = status;
@@ -145,13 +145,13 @@ public class TenderDto {
         return title;
     }
 
-    public PurchaserDto getPurchaser() {
-        return purchaser;
-    }
-
-    public List<TenderItemDto> getTenderItems() {
-        return tenderItems;
-    }
+//    public PurchaserDto getPurchaser() {
+//        return purchaser;
+//    }
+//
+//    public List<TenderItemDto> getTenderItems() {
+//        return tenderItems;
+//    }
 
     public String getStatus() {
         return status;

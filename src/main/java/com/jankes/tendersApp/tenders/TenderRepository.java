@@ -10,7 +10,9 @@ public interface TenderRepository {
 
     List<Tender> findAllByPurchaserId(Long id);
 
-    boolean existsById(Long id);
+    boolean existsByBidNumber(String bidNumber);
+
+    Tender findByBidNumber(String bidNumber);
 
     Tender save(Tender entity);
 

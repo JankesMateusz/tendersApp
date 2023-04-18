@@ -58,8 +58,8 @@ public class TenderService {
         var toSave = mapper.toEntity(dtoToSave);
         var purchaser = purchaserMapper.toEntity(purchaserService.findPurchaser(purchaserId));
 
-        if (tenderRepository.existsById(toSave.getId())) {
-            var result = updateTender(toSave);
+        if (tenderRepository.existsByBidNumber(toSave.getBidNumber())) {
+            var result = updateTender(tenderRepository.findByBidNumber(toSave.getBidNumber()));
             return mapper.toDto(result);
         }
         toSave.setPurchaser(purchaser);
