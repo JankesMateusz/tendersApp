@@ -5,8 +5,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
@@ -26,8 +26,8 @@ public class Tender {
     private String title;
     private String personOfContactFirstName;
     private String personOfContactLastName;
-    private String email; //TODO validation
-    private String phoneNumber; //TODO validation?
+    private String email;
+    private String phoneNumber;
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate publicationDate;
     @DateTimeFormat(pattern = "dd-MM-yyyy")
@@ -42,12 +42,14 @@ public class Tender {
     @Enumerated(EnumType.STRING)
     private TenderBudget budget;
     @OneToMany(mappedBy = "tender")
-    private Set<TenderItem> tenderItems;
+    private List<TenderItem> tenderItems;
     private String remarks;
+
 
     public Tender() {
         this.isTimeUp = false;
         this.status = Status.PENDING;
+        this.tenderItems = new ArrayList<>();
     }
 
     public void setId(Long id) {
@@ -98,11 +100,11 @@ public class Tender {
         this.link = link;
     }
 
-    public Set<TenderItem> getTenderItems() {
+    public List<TenderItem> getTenderItems() {
         return tenderItems;
     }
 
-    void setTenderItems(Set<TenderItem> tenderItems) {
+    void setTenderItems(List<TenderItem> tenderItems) {
         this.tenderItems = tenderItems;
     }
 

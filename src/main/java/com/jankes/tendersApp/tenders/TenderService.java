@@ -31,7 +31,6 @@ public class TenderService {
         this.purchaserMapper = purchaserMapper;
     }
 
-
     public TenderDto findSingleTender(Long id) {
         return tenderRepository.findById(id)
                 .map(mapper::toDto)
@@ -57,11 +56,15 @@ public class TenderService {
     TenderDto saveTender(TenderDto dtoToSave, Long purchaserId, List<TenderItemDto> items) {
         var toSave = mapper.toEntity(dtoToSave);
         var purchaser = purchaserMapper.toEntity(purchaserService.findPurchaser(purchaserId));
+        var tenderItems = items.stream().map(tenderItemMapper::toEntity).toList();
 
         if (tenderRepository.existsByBidNumber(toSave.getBidNumber())) {
-            var result = updateTender(tenderRepository.findByBidNumber(toSave.getBidNumber()));
+            var tender = tenderRepository.findByBidNumber(toSave.getBidNumber());
+            toSave.setTenderItems(tenderItems);
+            var result = updateTender(toSave, tender.getId());
             return mapper.toDto(result);
         }
+
         toSave.setPurchaser(purchaser);
         toSave.setPersonOfContactFirstName(purchaser.getPersonOfContactFirstName());
         toSave.setPersonOfContactLastName(purchaser.getPersonOfContactLastName());
@@ -69,18 +72,40 @@ public class TenderService {
         toSave.setPhoneNumber(purchaser.getPhoneNumber());
 
         var result = tenderRepository.save(toSave);
-        var tenderItems = items.stream().map(tenderItemMapper::toEntity).toList();
 
         tenderItems.forEach(t -> {
             t.setTender(result);
             tenderItemRepository.save(t);
+            result.addTenderItem(t);
         });
-
         return mapper.toDto(result);
     }
 
-    private Tender updateTender(Tender toSave) {
-        return tenderRepository.findById(toSave.getId()).map(existingTender -> {
+    private Tender updateTender(Tender toSave, Long id){
+        var itemsToRemove = tenderItemRepository.findByTenderId(id);
+        itemsToRemove.forEach(t -> {
+            tenderRepository.findById(id).ifPresent(tender -> tender.removeTenderItem(t));
+            tenderItemRepository.delete(t);
+        });
+
+        return tenderRepository.findById(id).map(existingTender ->{
+            existingTender.setLink(toSave.getLink());
+            existingTender.setPublicationDate(toSave.getPublicationDate());
+            existingTender.setBidDate(toSave.getBidDate());
+            existingTender.setTitle(toSave.getTitle());
+            toSave.getTenderItems().forEach(t -> {
+                t.setTender(existingTender);
+                tenderItemRepository.save(t);
+                existingTender.addTenderItem(t);
+            });
+            return existingTender;
+        }).orElseThrow(IllegalStateException::new);
+    }
+
+    //ToDO Delete?
+    private Tender updateTender2(Tender toSave, Long id) {
+        return tenderRepository.findById(id).map(existingTender -> {
+
             Set<TenderItem> itemsToRemove = new HashSet<>();
             existingTender.setLink(toSave.getLink());
             existingTender.setPublicationDate(toSave.getPublicationDate());

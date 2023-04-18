@@ -9,7 +9,6 @@ public class TenderRequest {
     Long purchaserId;
     TenderDto tenderDto;
     List<TenderItemDto> tenderItems;
-    PurchaserDto purchaserDto;
 
     public Long getPurchaserId() {
         return purchaserId;
@@ -35,11 +34,4 @@ public class TenderRequest {
         this.tenderItems = tenderItems;
     }
 
-    public PurchaserDto getPurchaserDto() {
-        return purchaserDto;
-    }
-
-    public void setPurchaserDto(PurchaserDto purchaserDto) {
-        this.purchaserDto = purchaserDto;
-    }
 }

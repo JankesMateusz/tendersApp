@@ -23,7 +23,7 @@ public class Purchaser {
     private String personOfContactFirstName;
     private String personOfContactLastName;
     private String email; //TODO validation
-    private String phoneNumber; //TODO validation?
+    private String phoneNumber;
     @OneToMany(mappedBy = "purchaser")
     Set<Tender> tenders;
 
@@ -142,7 +142,6 @@ public class Purchaser {
     public int hashCode() {
         return getClass().hashCode();
     }
-
 
     @Override
     public boolean equals(Object o) {

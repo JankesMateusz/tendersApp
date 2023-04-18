@@ -77,4 +77,8 @@ public class PurchaserService {
     public void removeTender(Tender toRemove){
         purchaserRepository.findById(toRemove.getPurchaser().getId()).ifPresent(purchaser -> removeTender(toRemove));
     }
+
+    public List<Tender> getTenders(Long purchaserId){
+        return purchaserRepository.findById(purchaserId).get().getTenders().stream().toList();
+    }
 }
