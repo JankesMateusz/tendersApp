@@ -1,5 +1,8 @@
 package com.jankes.tendersApp.tenders;
 
+import com.jankes.tendersApp.contacts.PersonInContact;
+import com.jankes.tendersApp.contacts.PersonInContactDto;
+import com.jankes.tendersApp.contacts.PersonInContactMapper;
 import com.jankes.tendersApp.purchasers.Purchaser;
 import com.jankes.tendersApp.purchasers.PurchaserDto;
 import com.jankes.tendersApp.purchasers.PurchaserMapper;
@@ -14,11 +17,11 @@ public class TenderDto {
     private String bidNumber;
     private String title;
     private PurchaserDto purchaser;
-//    private List<TenderItemDto> tenderItems;
     private String status;
     private String reportDate;
     private String budget;
     private String comments;
+    private PersonInContactDto personInContact;
 
     public static Builder builder() {return new Builder();}
 
@@ -33,11 +36,11 @@ public class TenderDto {
         this.siwzLink = builder.siwzLink;
         this.bidNumber = builder.bidNumber;
         this.purchaser = builder.purchaser;
-//        this.tenderItems = builder.tenderItems;
         this.status = builder.status;
         this.reportDate = builder.reportDate;
         this.budget = builder.budget;
         this.comments = builder.comments;
+        this.personInContact = builder.personInContact;
     }
 
     public static class Builder {
@@ -49,11 +52,11 @@ public class TenderDto {
         private String bidNumber;
         private String title;
         private PurchaserDto purchaser;
-//        private List<TenderItemDto> tenderItems;
         private String status;
         private String reportDate;
         private String budget;
         private String comments;
+        private PersonInContactDto personInContact;
 
         public Builder withId(long id){
             this.id = id;
@@ -94,15 +97,6 @@ public class TenderDto {
             this.purchaser = new PurchaserMapper().toDto(purchaser);
             return this;
         }
-//
-//        public Builder withTenderItems(Set<TenderItem> tenderItems){
-//            this.tenderItems = tenderItems.stream()
-//                    .map(item -> new TenderItemMapper()
-//                            .toDto(item))
-//                    .collect(
-//                            Collectors.toList());
-//            return this;
-//        }
 
         public Builder withStatus(String status){
             this.status = status;
@@ -121,6 +115,11 @@ public class TenderDto {
 
         public Builder withComments(String remarks){
             this.comments = remarks;
+            return this;
+        }
+
+        public Builder withPersonInContact(PersonInContact personInContact){
+            this.personInContact = new PersonInContactMapper().toDto(personInContact);
             return this;
         }
 
@@ -154,10 +153,6 @@ public class TenderDto {
     public PurchaserDto getPurchaser() {
         return purchaser;
     }
-//
-//    public List<TenderItemDto> getTenderItems() {
-//        return tenderItems;
-//    }
 
     public String getStatus() {
         return status;
@@ -173,5 +168,9 @@ public class TenderDto {
 
     public String getComments(){
         return comments;
+    }
+
+    public PersonInContactDto getPersonInContact() {
+        return personInContact;
     }
 }

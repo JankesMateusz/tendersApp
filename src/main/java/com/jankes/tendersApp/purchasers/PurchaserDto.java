@@ -1,13 +1,5 @@
 package com.jankes.tendersApp.purchasers;
 
-import com.jankes.tendersApp.tenders.Tender;
-import com.jankes.tendersApp.tenders.TenderDto;
-import com.jankes.tendersApp.tenders.TenderMapper;
-
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 public class PurchaserDto {
 
     private long id;
@@ -16,12 +8,8 @@ public class PurchaserDto {
     private String province;
     private String address;
     private String zipCode;
-    private String personOfContactFirstName;
     private String typeOfAccount;
-    private String personOfContactLastName;
-    private String phone;
-    private String email;
-//    private List<TenderDto> tenders;
+
 
     public static Builder builder() {
         return new Builder();
@@ -37,11 +25,6 @@ public class PurchaserDto {
         this.typeOfAccount = builder.typeOfAccount;
         this.address = builder.address;
         this.zipCode = builder.zipCode;
-        this.personOfContactFirstName = builder.personOfContactFirstName;
-        this.personOfContactLastName = builder.personOfContactLastName;
-        this.phone = builder.phone;
-        this.email = builder.email;
-//        this.tenders = builder.tenders;
     }
 
     public Long getId() {
@@ -68,29 +51,9 @@ public class PurchaserDto {
         return zipCode;
     }
 
-    public String getPersonOfContactFirstName() {
-        return personOfContactFirstName;
-    }
-
     public String getTypeOfAccount() {
         return typeOfAccount;
     }
-
-    public String getPersonOfContactLastName() {
-        return personOfContactLastName;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-//    public List<TenderDto> getTenders() {
-//        return tenders;
-//    }
 
     public static class Builder {
         private long id;
@@ -100,11 +63,6 @@ public class PurchaserDto {
         private String typeOfAccount;
         private String address;
         private String zipCode;
-        private String personOfContactFirstName;
-        private String personOfContactLastName;
-        private String phone;
-        private String email;
-//        private List<TenderDto> tenders;
 
         public Builder withId(long id){
             this.id = id;
@@ -140,34 +98,6 @@ public class PurchaserDto {
             this.zipCode = zipCode;
             return this;
         }
-
-        public Builder withPersonOfContactFirstName(String personOfContactFirstName){
-            this.personOfContactFirstName = personOfContactFirstName;
-            return this;
-        }
-
-        public Builder withPersonOfContactLastName(String personOfContactLastName){
-            this.personOfContactLastName = personOfContactLastName;
-            return this;
-        }
-
-        public Builder withPhone(String phone){
-            this.phone = phone;
-            return this;
-        }
-
-        public Builder withEmail(String email){
-            this.email = email;
-            return this;
-        }
-
-//        public Builder withTenders(Set<Tender> tenders){
-//            this.tenders = tenders.stream()
-//                    .map( t -> new TenderMapper().toDto(t))
-//                    .collect(Collectors.toList());
-//            return this;
-//        }
-
         public PurchaserDto build(){
             return new PurchaserDto(this);
         }

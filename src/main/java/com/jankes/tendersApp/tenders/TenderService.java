@@ -76,10 +76,6 @@ public class TenderService {
         }
 
         toSave.setPurchaser(purchaser);
-        toSave.setPersonOfContactFirstName(purchaser.getPersonOfContactFirstName());
-        toSave.setPersonOfContactLastName(purchaser.getPersonOfContactLastName());
-        toSave.setEmail(purchaser.getEmail());
-        toSave.setPhoneNumber(purchaser.getPhoneNumber());
 
         var result = tenderRepository.save(toSave);
         result.generateMDPID();

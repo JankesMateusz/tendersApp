@@ -1,5 +1,6 @@
 package com.jankes.tendersApp.tenders;
 
+import com.jankes.tendersApp.contacts.PersonInContact;
 import com.jankes.tendersApp.purchasers.Purchaser;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -26,10 +27,6 @@ public class Tender {
     private Purchaser purchaser;
     private String mdpId;
     private String title;
-    private String personOfContactFirstName;
-    private String personOfContactLastName;
-    private String email;
-    private String phoneNumber;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate publicationDate;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -46,7 +43,9 @@ public class Tender {
     @OneToMany(mappedBy = "tender")
     private List<TenderItem> tenderItems;
     private String comments;
-
+    @ManyToOne
+    @JoinColumn(name = "personInContact_id")
+    private PersonInContact personInContact;
 
     public Tender() {
         this.isTimeUp = false;
@@ -121,38 +120,6 @@ public class Tender {
         this.tenderItems = tenderItems;
     }
 
-    public String getPersonOfContactFirstName() {
-        return personOfContactFirstName;
-    }
-
-    public void setPersonOfContactFirstName(String personOfContactFirstName) {
-        this.personOfContactFirstName = personOfContactFirstName;
-    }
-
-    public String getPersonOfContactLastName() {
-        return personOfContactLastName;
-    }
-
-    public void setPersonOfContactLastName(String personOfContactLastName) {
-        this.personOfContactLastName = personOfContactLastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
     public String getBidNumber() {
         return bidNumber;
     }
@@ -212,6 +179,14 @@ public class Tender {
 
     public void setComments(String comments) {
         this.comments = comments;
+    }
+
+    public PersonInContact getPersonInContact() {
+        return personInContact;
+    }
+
+    public void setPersonInContact(PersonInContact personInContact) {
+        this.personInContact = personInContact;
     }
 
     public List<TenderItemDto> getTenderItemsDto(){

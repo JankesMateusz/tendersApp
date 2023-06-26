@@ -64,10 +64,6 @@ public class PurchaserService {
                     existingPurchaser.setProvince(toUpdate.getProvince());
                     existingPurchaser.setAddress(toUpdate.getAddress());
                     existingPurchaser.setOfficialName(toUpdate.getOfficialName());
-                    existingPurchaser.setPersonOfContactFirstName(toUpdate.getPersonOfContactFirstName());
-                    existingPurchaser.setPersonOfContactLastName(toUpdate.getPersonOfContactLastName());
-                    existingPurchaser.setEmail(toUpdate.getEmail());
-                    existingPurchaser.setPhoneNumber(toUpdate.getPhoneNumber());
                     existingPurchaser.setZipCode(toUpdate.getZipCode());
                     existingPurchaser.setTypeOfAccount(toUpdate.getTypeOfAccount());
                     purchaserRepository.save(existingPurchaser);

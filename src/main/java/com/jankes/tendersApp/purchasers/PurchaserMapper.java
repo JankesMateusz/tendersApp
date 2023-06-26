@@ -17,15 +17,10 @@ public class PurchaserMapper implements DtoMapper<PurchaserDto, Purchaser>{
                 .withId(Optional.ofNullable(entity.getId()).orElse(0L))
                 .withOfficialName(entity.getOfficialName())
                 .withCity(entity.getCity())
-                .withProvince(entity.getProvince())
                 .withAddress(entity.getAddress())
                 .withZipCode(entity.getZipCode())
-                .withPersonOfContactFirstName(entity.getPersonOfContactFirstName())
-                .withPersonOfContactLastName(entity.getPersonOfContactLastName())
-                .withPhone(entity.getPhoneNumber())
+                .withProvince(entity.getProvince())
                 .withTypeOfAccount(entity.getTypeOfAccount().name().toLowerCase())
-                .withEmail(entity.getEmail())
-                //.withTenders(Optional.ofNullable(entity.getTenders()).orElse(new HashSet<>()))
                 .build();
     }
 
@@ -35,19 +30,11 @@ public class PurchaserMapper implements DtoMapper<PurchaserDto, Purchaser>{
         result.setId(dto.getId());
         result.setOfficialName(dto.getOfficialName());
         result.setCity(dto.getCity());
-        result.setProvince(dto.getProvince());
         result.setAddress(dto.getAddress());
         result.setZipCode(dto.getZipCode());
-        result.setPersonOfContactFirstName(dto.getPersonOfContactFirstName());
-        result.setPersonOfContactLastName(dto.getPersonOfContactLastName());
-        result.setPhoneNumber(dto.getPhone());
+        result.setProvince(dto.getProvince());
         result.setTypeOfAccount(TypeOfAccount.valueOf(dto.getTypeOfAccount().toUpperCase()));
-        result.setEmail(dto.getEmail());
-//        result.setTenders(
-//                dto.getTenders()
-//                .stream()
-//                .map(t -> new TenderMapper().toEntity(t))
-//                        .collect(Collectors.toSet()));
+
         return result;
     }
 }

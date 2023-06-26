@@ -49,34 +49,13 @@ public class PurchaserServiceTest {
     }
 
     @Test
-    public void updatePurchaserEmail(){
-        //given
-        var repository = inMemoryPurchaserRepository();
-        //and
-        var mapper = new PurchaserMapper();
-        //and
-        var purchaser = purchaserWith(1,"test", "testowe", "testowe", TypeOfAccount.DEFENCE, "test@test.pl");
-        repository.save(purchaser);
-        long countBefore = repository.count();
-        //when
-        purchaser.setEmail("test2@test.pl");
-        //system under test
-        var service = new PurchaserService(repository, mapper);
-        //when
-        service.createPurchaser(mapper.toDto(purchaser));
-        //
-        assertThat(repository.count()).isEqualTo(countBefore);
-        assertThat(service.findPurchaser(1L).getEmail()).isEqualTo("test2@test.pl");
-    }
-
-    @Test
     public void updatePurchaserTypeOfAccount() {
         //given
         var repository = inMemoryPurchaserRepository();
         //and
         var mapper = new PurchaserMapper();
         //and
-        var purchaser = purchaserWith(1,"test", "testowe", "testowe", TypeOfAccount.DEFENCE, "test@test.pl");
+        var purchaser = purchaserWith(1,"test", "testowe", "testowe", TypeOfAccount.DEFENCE);
         repository.save(purchaser);
         long countBefore = repository.count();
         //when
@@ -97,9 +76,9 @@ public class PurchaserServiceTest {
         //and
         var mapper = new PurchaserMapper();
         //and
-        var purchaser = purchaserWith(1,"test", "testowe", "testowe", TypeOfAccount.DEFENCE, "test@test.pl");
+        var purchaser = purchaserWith(1,"test", "testowe", "testowe", TypeOfAccount.DEFENCE);
         //and
-        var purchaser2 = purchaserWith(2,"test2", "testowe2", "testowe2", TypeOfAccount.EDUK12, "test2@test.pl");
+        var purchaser2 = purchaserWith(2,"test2", "testowe2", "testowe2", TypeOfAccount.EDUK12);
         //
         repository.save(purchaser);
         repository.save(purchaser2);
@@ -119,11 +98,11 @@ public class PurchaserServiceTest {
         //and
         var mapper = new PurchaserMapper();
         //and
-        var purchaser = purchaserWith(1,"test", "testowe", "testowe", TypeOfAccount.DEFENCE, "test@test.pl");
+        var purchaser = purchaserWith(1,"test", "testowe", "testowe", TypeOfAccount.DEFENCE);
         //and
-        var purchaser2 = purchaserWith(2,"test2", "testowe2", "testowe2", TypeOfAccount.EDUK12, "test2@test.pl");
+        var purchaser2 = purchaserWith(2,"test2", "testowe2", "testowe2", TypeOfAccount.EDUK12);
         //
-        var purchaser3 = purchaserWith(3,"nowy", "nowe", "nowe", TypeOfAccount.EDUK12, "nowe@test.pl");
+        var purchaser3 = purchaserWith(3,"nowy", "nowe", "nowe", TypeOfAccount.EDUK12);
         repository.save(purchaser);
         repository.save(purchaser2);
         repository.save(purchaser3);
@@ -142,7 +121,7 @@ public class PurchaserServiceTest {
         //and
         var mapper = new PurchaserMapper();
         //and
-        var purchaser = purchaserWith(1,"test", "testowe", "testowe", TypeOfAccount.DEFENCE, "test@test.pl");
+        var purchaser = purchaserWith(1,"test", "testowe", "testowe", TypeOfAccount.DEFENCE);
         int count = purchaser.getTenders().size();
         //and
         var tender = mock(Tender.class);
@@ -157,7 +136,7 @@ public class PurchaserServiceTest {
         assertThat(purchaser.getTenders().size()).isNotEqualTo(count);
     }
 
-    private Purchaser purchaserWith(long id, String name, String city, String province, TypeOfAccount typeOfAccount, String email){
+    private Purchaser purchaserWith(long id, String name, String city, String province, TypeOfAccount typeOfAccount){
         var result = new Purchaser();
         Set<Tender> tenders = new HashSet<>();
 
@@ -166,7 +145,6 @@ public class PurchaserServiceTest {
         result.setCity(city);
         result.setProvince(province);
         result.setTypeOfAccount(typeOfAccount);
-        result.setEmail(email);
         result.setTenders(tenders);
         return result;
     }

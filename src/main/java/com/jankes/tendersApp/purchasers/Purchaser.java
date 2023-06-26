@@ -1,5 +1,6 @@
 package com.jankes.tendersApp.purchasers;
 
+import com.jankes.tendersApp.contacts.PersonInContact;
 import com.jankes.tendersApp.tenders.Tender;
 
 import javax.persistence.*;
@@ -15,17 +16,15 @@ public class Purchaser {
     private String officialName;
     private String city;
     private String province;
+    private String address;
+    private String zipCode;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private TypeOfAccount typeOfAccount;
-    private String address;
-    private String zipCode;
-    private String personOfContactFirstName;
-    private String personOfContactLastName;
-    private String email; //TODO validation
-    private String phoneNumber;
     @OneToMany(mappedBy = "purchaser")
-    Set<Tender> tenders;
+    private Set<Tender> tenders;
+    @OneToMany(mappedBy = "purchaser")
+    private Set<PersonInContact> peopleInContact;
 
     public Purchaser(){}
 
@@ -74,6 +73,22 @@ public class Purchaser {
         this.province = province;
     }
 
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
     public TypeOfAccount getTypeOfAccount() {
         return typeOfAccount;
     }
@@ -82,60 +97,20 @@ public class Purchaser {
         this.typeOfAccount = typeOfAccount;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getZipCode() {
-        return zipCode;
-    }
-
-    public void setZipCode(String zipCode) {
-        this.zipCode = zipCode;
-    }
-
-    public String getPersonOfContactFirstName() {
-        return personOfContactFirstName;
-    }
-
-    public void setPersonOfContactFirstName(String personOfContactFirstName) {
-        this.personOfContactFirstName = personOfContactFirstName;
-    }
-
-    public String getPersonOfContactLastName() {
-        return personOfContactLastName;
-    }
-
-    public void setPersonOfContactLastName(String personOfContactLastName) {
-        this.personOfContactLastName = personOfContactLastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
     public Set<Tender> getTenders() {
         return tenders;
     }
 
     public void setTenders(Set<Tender> tenders) {
         this.tenders = tenders;
+    }
+
+    public Set<PersonInContact> getPeopleInContact() {
+        return peopleInContact;
+    }
+
+    public void setPeopleInContact(Set<PersonInContact> peopleInContact) {
+        this.peopleInContact = peopleInContact;
     }
 
     @Override
