@@ -24,12 +24,12 @@ public class ReportMapper implements DtoMapper<ReportDto, Tender> {
                 .withPublicationDate(format(entity.getPublicationDate()))
                 .withBidDate(format(entity.getBidDate()))
                 .withTitle(entity.getTitle())
-                .withLink(entity.getLink())
+                .withLink(entity.getSiwzLink())
                 .withBidNumber(entity.getBidNumber())
                 .withReportDate(format(entity.getReportDate()))
                 .withStatus(entity.getStatus().name())
                 .withBudget(entity.getBudget().name())
-                .withRemarks(entity.getRemarks())
+                .withRemarks(entity.getComments())
                 .withTenderItems(entity.getTenderItemsDto())
                 .build();
     }

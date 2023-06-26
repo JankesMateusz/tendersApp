@@ -4,24 +4,21 @@ import com.jankes.tendersApp.purchasers.Purchaser;
 import com.jankes.tendersApp.purchasers.PurchaserDto;
 import com.jankes.tendersApp.purchasers.PurchaserMapper;
 
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 public class TenderDto {
 
     private long id;
+    private String mdpId;
     private String publicationDate;
     private String bidDate;
-    private String link;
+    private String siwzLink;
     private String bidNumber;
     private String title;
-//    private PurchaserDto purchaser;
+    private PurchaserDto purchaser;
 //    private List<TenderItemDto> tenderItems;
     private String status;
     private String reportDate;
     private String budget;
-    private String remarks;
+    private String comments;
 
     public static Builder builder() {return new Builder();}
 
@@ -29,35 +26,42 @@ public class TenderDto {
 
     public TenderDto(Builder builder) {
         this.id = builder.id;
+        this.mdpId = builder.mdpId;
         this.publicationDate = builder.publicationDate;
         this.bidDate = builder.bidDate;
         this.title = builder.title;
-        this.link = builder.link;
+        this.siwzLink = builder.siwzLink;
         this.bidNumber = builder.bidNumber;
-//        this.purchaser = builder.purchaser;
+        this.purchaser = builder.purchaser;
 //        this.tenderItems = builder.tenderItems;
         this.status = builder.status;
         this.reportDate = builder.reportDate;
         this.budget = builder.budget;
-        this.remarks = builder.remarks;
+        this.comments = builder.comments;
     }
 
     public static class Builder {
         private long id;
+        private String mdpId;
         private String publicationDate;
         private String bidDate;
-        private String link;
+        private String siwzLink;
         private String bidNumber;
         private String title;
-//        private PurchaserDto purchaser;
+        private PurchaserDto purchaser;
 //        private List<TenderItemDto> tenderItems;
         private String status;
         private String reportDate;
         private String budget;
-        private String remarks;
+        private String comments;
 
         public Builder withId(long id){
             this.id = id;
+            return this;
+        }
+
+        public Builder withMdpId(String mdpId){
+            this.mdpId = mdpId;
             return this;
         }
 
@@ -71,8 +75,8 @@ public class TenderDto {
             return this;
         }
 
-        public Builder withLink(String link){
-            this.link = link;
+        public Builder withSiwzLink(String siwzLink){
+            this.siwzLink = siwzLink;
             return this;
         }
 
@@ -86,10 +90,10 @@ public class TenderDto {
             return this;
         }
 
-//        public Builder withPurchaser(Purchaser purchaser){
-//            this.purchaser = new PurchaserMapper().toDto(purchaser);
-//            return this;
-//        }
+        public Builder withPurchaser(Purchaser purchaser){
+            this.purchaser = new PurchaserMapper().toDto(purchaser);
+            return this;
+        }
 //
 //        public Builder withTenderItems(Set<TenderItem> tenderItems){
 //            this.tenderItems = tenderItems.stream()
@@ -115,8 +119,8 @@ public class TenderDto {
             return this;
         }
 
-        public Builder withRemarks(String remarks){
-            this.remarks = remarks;
+        public Builder withComments(String remarks){
+            this.comments = remarks;
             return this;
         }
 
@@ -127,6 +131,8 @@ public class TenderDto {
         return id;
     }
 
+    public String getMdpId(){return mdpId;}
+
     public String getPublicationDate() {
         return publicationDate;
     }
@@ -135,8 +141,8 @@ public class TenderDto {
         return bidDate;
     }
 
-    public String getLink() {
-        return link;
+    public String getSiwzLink() {
+        return siwzLink;
     }
 
     public String getBidNumber(){return bidNumber;}
@@ -145,9 +151,9 @@ public class TenderDto {
         return title;
     }
 
-//    public PurchaserDto getPurchaser() {
-//        return purchaser;
-//    }
+    public PurchaserDto getPurchaser() {
+        return purchaser;
+    }
 //
 //    public List<TenderItemDto> getTenderItems() {
 //        return tenderItems;
@@ -165,7 +171,7 @@ public class TenderDto {
         return budget;
     }
 
-    public String getRemarks(){
-        return remarks;
+    public String getComments(){
+        return comments;
     }
 }

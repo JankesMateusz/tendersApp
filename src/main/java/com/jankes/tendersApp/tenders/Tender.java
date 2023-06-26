@@ -5,6 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,33 +24,39 @@ public class Tender {
     @ManyToOne
     @JoinColumn(name = "purchaser_id")
     private Purchaser purchaser;
+    private String mdpId;
     private String title;
     private String personOfContactFirstName;
     private String personOfContactLastName;
     private String email;
     private String phoneNumber;
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate publicationDate;
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate bidDate;
-    private String link;
+    private String siwzLink;
     private String bidNumber;
     @Enumerated(EnumType.STRING)
     private Status status;
     private boolean isTimeUp;
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate reportDate;
     @Enumerated(EnumType.STRING)
     private TenderBudget budget;
     @OneToMany(mappedBy = "tender")
     private List<TenderItem> tenderItems;
-    private String remarks;
+    private String comments;
 
 
     public Tender() {
         this.isTimeUp = false;
         this.status = Status.PENDING;
         this.tenderItems = new ArrayList<>();
+    }
+
+    public void generateMDPID(){
+        int currentYear = Year.now().getValue();
+        this.mdpId = String.format("%d%05d", currentYear, id);
     }
 
     public void setId(Long id) {
@@ -67,6 +74,12 @@ public class Tender {
     public void setPurchaser(Purchaser purchaser) {
         this.purchaser = purchaser;
     }
+
+    public void setMdpId(String mdpId) {
+        this.mdpId = mdpId;
+    }
+
+    public String getMdpId(){ return mdpId;}
 
     public String getTitle() {
         return title;
@@ -92,12 +105,12 @@ public class Tender {
         this.bidDate = bidDate;
     }
 
-    public String getLink() {
-        return link;
+    public String getSiwzLink() {
+        return siwzLink;
     }
 
-    public void setLink(String link) {
-        this.link = link;
+    public void setSiwzLink(String siwzLink) {
+        this.siwzLink = siwzLink;
     }
 
     public List<TenderItem> getTenderItems() {
@@ -193,12 +206,12 @@ public class Tender {
         item.setTender(null);
     }
 
-    public String getRemarks() {
-        return remarks;
+    public String getComments() {
+        return comments;
     }
 
-    public void setRemarks(String remarks) {
-        this.remarks = remarks;
+    public void setComments(String comments) {
+        this.comments = comments;
     }
 
     public List<TenderItemDto> getTenderItemsDto(){

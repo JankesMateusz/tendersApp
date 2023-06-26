@@ -32,9 +32,18 @@ class PurchaserController {
         return new ResponseEntity<>(purchasers, HttpStatus.OK);
     }
 
-    @GetMapping("/search")
+    @GetMapping("/searchName")
     ResponseEntity<List<PurchaserDto>> findPurchasersByName(@RequestParam(value = "name") String name){
         List<PurchaserDto> purchasers = purchaserService.findByName(name);
+        if(purchasers.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(purchasers, HttpStatus.OK);
+    }
+
+    @GetMapping("/searchCity")
+    ResponseEntity<List<PurchaserDto>> findPurchasersByCity(@RequestParam(value = "city") String city){
+        List<PurchaserDto> purchasers = purchaserService.findByCity(city);
         if(purchasers.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }

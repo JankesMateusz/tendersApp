@@ -10,6 +10,7 @@ public class TenderItemDto {
     private String office;
     private String remarks;
     private int taskNumber;
+    private String purchaseForm;
 
     public static Builder builder(){
         return new Builder();
@@ -26,6 +27,7 @@ public class TenderItemDto {
         this.office = builder.office;
         this.remarks = builder.remarks;
         this.taskNumber = builder.taskNumber;
+        this.purchaseForm = builder.purchaseForm;
     }
 
     public long getId() {
@@ -60,6 +62,8 @@ public class TenderItemDto {
         return taskNumber;
     }
 
+    public String getPurchaseForm(){return purchaseForm;}
+
     public static class Builder{
         private long id;
         private String category;
@@ -69,6 +73,7 @@ public class TenderItemDto {
         private String office;
         private String remarks;
         private int taskNumber;
+        private String purchaseForm;
 
         public Builder withId(long id){
             this.id = id;
@@ -107,6 +112,11 @@ public class TenderItemDto {
 
         public Builder withTaskNumber(int number){
             this.taskNumber = number;
+            return this;
+        }
+
+        public Builder withPurchaseForm(String purchaseForm){
+            this.purchaseForm = purchaseForm;
             return this;
         }
 

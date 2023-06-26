@@ -12,13 +12,14 @@ public class TenderItemMapper implements DtoMapper<TenderItemDto, TenderItem> {
     public TenderItemDto toDto(TenderItem item) {
         return TenderItemDto.builder()
                 .withId(Optional.ofNullable(item.getId()).orElse(0L))
-                .withCategory(item.getCategory().name().toLowerCase())
+                .withCategory(item.getCategory().name())
                 .withQuantity(Optional.ofNullable(item.getQuantity()).orElse(0))
                 .withCpuQuantity(Optional.ofNullable(item.getCpuQuantity()).orElse(0))
                 .withOs(item.getOs())
                 .withOffice(item.getOffice())
                 .withRemarks(item.getRemarks())
                 .withTaskNumber(Optional.ofNullable(item.getTaskNumber()).orElse(0))
+                .withPurchaseForm(item.getPurchaseForm())
                 .build();
     }
 
@@ -33,6 +34,7 @@ public class TenderItemMapper implements DtoMapper<TenderItemDto, TenderItem> {
         item.setOffice(dto.getOffice());
         item.setRemarks(dto.getRemarks());
         item.setTaskNumber(dto.getTaskNumber());
+        item.setPurchaseForm(dto.getPurchaseForm());
 
         return item;
     }

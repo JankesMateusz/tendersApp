@@ -8,6 +8,8 @@ public interface TenderRepository {
 
     long count();
 
+    List<Tender> findAll();
+
     List<Tender> findAllByPurchaserId(Long id);
 
     boolean existsByBidNumber(String bidNumber);
@@ -16,7 +18,11 @@ public interface TenderRepository {
 
     Tender save(Tender entity);
 
-    Optional<Tender> findById(Long id);
+    Optional<Tender> findByMdpId(String mdpId);
+
+    boolean existsByMdpId(String mdpId);
+
+    boolean existsById(Long id);
 
     List<Tender> findAllByTitleIgnoreCaseContaining(String phrase);
 

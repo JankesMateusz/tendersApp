@@ -15,6 +15,8 @@ interface PurchaserRepository{
 
     List<Purchaser> findByOfficialNameIgnoreCaseContaining(String name);
 
+    List<Purchaser> findByCityIgnoreCaseContaining(String city);
+
     Purchaser save(Purchaser entity);
 
     void delete(Purchaser toDelete);

@@ -1,6 +1,5 @@
 package com.jankes.tendersApp.tenders;
 
-import com.jankes.tendersApp.purchasers.PurchaserDto;
 import com.jankes.tendersApp.purchasers.PurchaserMapper;
 import com.jankes.tendersApp.purchasers.PurchaserService;
 import org.springframework.stereotype.Service;
@@ -31,11 +30,18 @@ public class TenderService {
         this.purchaserMapper = purchaserMapper;
     }
 
-    public TenderDto findSingleTender(Long id) {
-        return tenderRepository.findById(id)
+    public TenderDto findSingleTender(String mdpId) {
+        return tenderRepository.findByMdpId(mdpId)
                 .map(mapper::toDto)
                 .orElseThrow(
                         () -> new IllegalStateException("Tender not found"));
+    }
+
+    public List<TenderDto> findAllTenders(){
+        return tenderRepository.findAll()
+                .stream()
+                .map(mapper::toDto)
+                .collect(Collectors.toList());
     }
 
     public List<TenderDto> findAllTendersForPurchaser(Long id) {
@@ -58,11 +64,15 @@ public class TenderService {
         var purchaser = purchaserMapper.toEntity(purchaserService.findPurchaser(purchaserId));
         var tenderItems = items.stream().map(tenderItemMapper::toEntity).toList();
 
-        if (tenderRepository.existsByBidNumber(toSave.getBidNumber())) {
-            var tender = tenderRepository.findByBidNumber(toSave.getBidNumber());
+        if (tenderRepository.existsByMdpId(toSave.getMdpId())) {
+            var tender = tenderRepository.findByMdpId(toSave.getMdpId());
             toSave.setTenderItems(tenderItems);
-            var result = updateTender(toSave, tender.getId());
-            return mapper.toDto(result);
+            String mdpId;
+            if(tender.isPresent()){
+                mdpId = tender.get().getMdpId();
+                var result = updateTender(toSave, mdpId);
+                return mapper.toDto(result);
+            }
         }
 
         toSave.setPurchaser(purchaser);
@@ -72,6 +82,7 @@ public class TenderService {
         toSave.setPhoneNumber(purchaser.getPhoneNumber());
 
         var result = tenderRepository.save(toSave);
+        result.generateMDPID();
 
         tenderItems.forEach(t -> {
             t.setTender(result);
@@ -81,18 +92,20 @@ public class TenderService {
         return mapper.toDto(result);
     }
 
-    private Tender updateTender(Tender toSave, Long id){
-        var itemsToRemove = tenderItemRepository.findByTenderId(id);
+    private Tender updateTender(Tender toSave, String mdpId){
+        var itemsToRemove = tenderItemRepository.findByTenderMdpId(mdpId);
         itemsToRemove.forEach(t -> {
-            tenderRepository.findById(id).ifPresent(tender -> tender.removeTenderItem(t));
+            tenderRepository.findByMdpId(mdpId).ifPresent(tender -> tender.removeTenderItem(t));
             tenderItemRepository.delete(t);
         });
 
-        return tenderRepository.findById(id).map(existingTender ->{
-            existingTender.setLink(toSave.getLink());
+        return tenderRepository.findByMdpId(mdpId).map(existingTender ->{
+            existingTender.setBidNumber(toSave.getBidNumber());
+            existingTender.setSiwzLink(toSave.getSiwzLink());
             existingTender.setPublicationDate(toSave.getPublicationDate());
             existingTender.setBidDate(toSave.getBidDate());
             existingTender.setTitle(toSave.getTitle());
+            existingTender.setBudget(toSave.getBudget());
             toSave.getTenderItems().forEach(t -> {
                 t.setTender(existingTender);
                 tenderItemRepository.save(t);
@@ -103,11 +116,11 @@ public class TenderService {
     }
 
     //ToDO Delete?
-    private Tender updateTender2(Tender toSave, Long id) {
-        return tenderRepository.findById(id).map(existingTender -> {
+    private Tender updateTender2(Tender toSave, String mdpId) {
+        return tenderRepository.findByMdpId(mdpId).map(existingTender -> {
 
             Set<TenderItem> itemsToRemove = new HashSet<>();
-            existingTender.setLink(toSave.getLink());
+            existingTender.setSiwzLink(toSave.getSiwzLink());
             existingTender.setPublicationDate(toSave.getPublicationDate());
             existingTender.setBidDate(toSave.getBidDate());
             existingTender.setTitle(toSave.getTitle());

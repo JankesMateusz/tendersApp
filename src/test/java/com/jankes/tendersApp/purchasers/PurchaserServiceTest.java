@@ -209,6 +209,11 @@ public class PurchaserServiceTest {
         }
 
         @Override
+        public List<Purchaser> findByCityIgnoreCaseContaining(String city){
+            return null;
+        }
+
+        @Override
         public Purchaser save(Purchaser entity) {
             if (entity.getId() == 0) {
                 try {

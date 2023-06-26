@@ -38,6 +38,13 @@ public class PurchaserService {
                 .collect(Collectors.toList());
     }
 
+    public List<PurchaserDto> findByCity(String city){
+        return purchaserRepository.findByCityIgnoreCaseContaining(city)
+                .stream()
+                .map(mapper::toDto)
+                .collect(Collectors.toList());
+    }
+
     public PurchaserDto createPurchaser(PurchaserDto toCreate){
         var toSave = mapper.toEntity(toCreate);
 

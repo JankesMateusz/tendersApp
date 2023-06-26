@@ -20,10 +20,11 @@ class TenderItem {
     private String office;
     private String remarks;
     private Integer taskNumber;
+    private String purchaseForm;
 
     public TenderItem(){}
 
-    public TenderItem(Tender tender, ItemCategory category, Integer quantity, Integer cpuQuantity, String os, String office, String remarks, Integer taskNumber) {
+    public TenderItem(Tender tender, ItemCategory category, Integer quantity, Integer cpuQuantity, String os, String office, String remarks, Integer taskNumber, String purchaseForm) {
         this.tender = tender;
         this.category = category;
         this.quantity = quantity;
@@ -32,6 +33,7 @@ class TenderItem {
         this.office = office;
         this.remarks = remarks;
         this.taskNumber = taskNumber;
+        this.purchaseForm = purchaseForm;
     }
 
     public Long getId() {return this.id;}
@@ -102,6 +104,12 @@ class TenderItem {
 
     public void setTaskNumber(Integer taskNumber) {
         this.taskNumber = taskNumber;
+    }
+
+    public String getPurchaseForm() {return purchaseForm;}
+
+    public void setPurchaseForm(String purchaseForm) {
+        this.purchaseForm = purchaseForm;
     }
 
     @Override

@@ -1,12 +1,10 @@
 package com.jankes.tendersApp.tenders;
 
 import com.jankes.tendersApp.common.DtoMapper;
-import com.jankes.tendersApp.purchasers.PurchaserMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.stream.Collectors;
 
 @Service
 public class TenderMapper implements DtoMapper<TenderDto, Tender> {
@@ -15,17 +13,18 @@ public class TenderMapper implements DtoMapper<TenderDto, Tender> {
     public TenderDto toDto(Tender entity) {
         return TenderDto.builder()
                 .withId(entity.getId())
+                .withMdpId(entity.getMdpId())
                 .withPublicationDate(format(entity.getPublicationDate()))
                 .withBidDate(format(entity.getBidDate()))
                 .withTitle(entity.getTitle())
-                .withLink(entity.getLink())
+                .withSiwzLink(entity.getSiwzLink())
                 .withBidNumber(entity.getBidNumber())
-                //.withPurchaser(entity.getPurchaser())
+                .withPurchaser(entity.getPurchaser())
                 //.withTenderItems(entity.getTenderItems())
                 .withStatus(entity.getStatus().name())
                 .withReportDate(format(entity.getReportDate()))
                 .withBudget(entity.getBudget().name())
-                .withRemarks(entity.getRemarks())
+                .withComments(entity.getComments())
                 .build();
     }
 
@@ -33,10 +32,11 @@ public class TenderMapper implements DtoMapper<TenderDto, Tender> {
     public Tender toEntity(TenderDto dto){
         var result = new Tender();
         result.setId(dto.getId());
-        result.setPublicationDate(LocalDate.parse(dto.getPublicationDate(), DateTimeFormatter.ofPattern("dd-MM-yyyy")));
-        result.setBidDate(LocalDate.parse(dto.getBidDate(), DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+        result.setMdpId(dto.getMdpId());
+        result.setPublicationDate(LocalDate.parse(dto.getPublicationDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        result.setBidDate(LocalDate.parse(dto.getBidDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         result.setTitle(dto.getTitle());
-        result.setLink(dto.getLink());
+        result.setSiwzLink(dto.getSiwzLink());
         result.setBidNumber(dto.getBidNumber());
 //        result.setPurchaser(new PurchaserMapper().toEntity(dto.getPurchaser()));
 //        result.setTenderItems(
@@ -45,14 +45,14 @@ public class TenderMapper implements DtoMapper<TenderDto, Tender> {
 //                        .map(item -> new TenderItemMapper().toEntity(item))
 //                        .collect(Collectors.toSet()));
         result.setStatus(Tender.Status.valueOf(dto.getStatus()));
-        result.setReportDate(LocalDate.parse(dto.getReportDate(), DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+        result.setReportDate(LocalDate.parse(dto.getReportDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         result.setBudget(TenderBudget.valueOf(dto.getBudget()));
-        result.setRemarks(dto.getRemarks());
+        result.setComments(dto.getComments());
         return result;
     }
 
     private String format(LocalDate time){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return time.format(formatter);
     }
 }

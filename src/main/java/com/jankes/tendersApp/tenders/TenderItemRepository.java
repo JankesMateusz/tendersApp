@@ -7,7 +7,7 @@ interface TenderItemRepository {
 
     Optional<TenderItem> findById(Long id);
 
-    List<TenderItem> findByTenderId(Long id);
+    List<TenderItem> findByTenderMdpId(String mdpId);
 
     TenderItem save(TenderItem entity);
 
