@@ -1,5 +1,7 @@
 package com.jankes.tendersApp.tenders;
 
+import com.jankes.tendersApp.contacts.PersonInContactMapper;
+import com.jankes.tendersApp.contacts.PersonInContactService;
 import com.jankes.tendersApp.purchasers.PurchaserMapper;
 import com.jankes.tendersApp.purchasers.PurchaserService;
 import org.springframework.stereotype.Service;
@@ -20,14 +22,18 @@ public class TenderService {
     private final TenderItemMapper tenderItemMapper;
     private final PurchaserService purchaserService;
     private final PurchaserMapper purchaserMapper;
+    private final PersonInContactService personInContactService;
+    private final PersonInContactMapper personInContactMapper;
 
-    public TenderService(TenderRepository tenderRepository, TenderItemRepository tenderItemRepository, TenderMapper mapper, TenderItemMapper tenderItemMapper, PurchaserService purchaserService, PurchaserMapper purchaserMapper) {
+    public TenderService(TenderRepository tenderRepository, TenderItemRepository tenderItemRepository, TenderMapper mapper, TenderItemMapper tenderItemMapper, PurchaserService purchaserService, PurchaserMapper purchaserMapper, PersonInContactService personInContactService, PersonInContactMapper personInContactMapper) {
         this.tenderRepository = tenderRepository;
         this.tenderItemRepository = tenderItemRepository;
         this.mapper = mapper;
         this.tenderItemMapper = tenderItemMapper;
         this.purchaserService = purchaserService;
         this.purchaserMapper = purchaserMapper;
+        this.personInContactService = personInContactService;
+        this.personInContactMapper = personInContactMapper;
     }
 
     public TenderDto findSingleTender(String mdpId) {
@@ -59,10 +65,11 @@ public class TenderService {
     }
 
     @Transactional
-    TenderDto saveTender(TenderDto dtoToSave, Long purchaserId, List<TenderItemDto> items) {
+    TenderDto saveTender(TenderDto dtoToSave, Long purchaserId, List<TenderItemDto> items, Long contactId) {
         var toSave = mapper.toEntity(dtoToSave);
         var purchaser = purchaserMapper.toEntity(purchaserService.findPurchaser(purchaserId));
         var tenderItems = items.stream().map(tenderItemMapper::toEntity).toList();
+        var contact = personInContactMapper.toEntity(personInContactService.findPersonInContact(contactId));
 
         if (tenderRepository.existsByMdpId(toSave.getMdpId())) {
             var tender = tenderRepository.findByMdpId(toSave.getMdpId());
@@ -76,6 +83,7 @@ public class TenderService {
         }
 
         toSave.setPurchaser(purchaser);
+        toSave.setPersonInContact(contact);
 
         var result = tenderRepository.save(toSave);
         result.generateMDPID();

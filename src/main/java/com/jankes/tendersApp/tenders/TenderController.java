@@ -24,7 +24,7 @@ class TenderController {
     ResponseEntity<TenderResponse> findTender(@PathVariable String mdpId) {
         TenderDto tender = tenderService.findSingleTender(mdpId);
         List<TenderItemDto> items = tenderItemService.findItemsByTenderMdpId(mdpId);
-        TenderResponse response = new TenderResponse(tender, tender.getPurchaser(), items);
+        TenderResponse response = new TenderResponse(tender, tender.getPurchaser(), items, tender.getPersonInContact());
         if (tender == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -60,7 +60,7 @@ class TenderController {
 
     @PostMapping
     ResponseEntity<TenderDto> create(@RequestBody TenderRequest toCreate) {
-        TenderDto result = tenderService.saveTender(toCreate.getTenderDto(), toCreate.getPurchaserId(), toCreate.getTenderItems());
+        TenderDto result = tenderService.saveTender(toCreate.getTenderDto(), toCreate.getPurchaserId(), toCreate.getTenderItems(), toCreate.getPersonInContactId());
         return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
     }
 

@@ -7,6 +7,7 @@ public class TenderRequest {
     Long purchaserId;
     TenderDto tenderDto;
     List<TenderItemDto> tenderItems;
+    Long personInContactId;
 
     public Long getPurchaserId() {
         return purchaserId;
@@ -21,5 +22,7 @@ public class TenderRequest {
     public List<TenderItemDto> getTenderItems() {
         return tenderItems;
     }
+
+    public Long getPersonInContactId(){return personInContactId;}
 
 }
