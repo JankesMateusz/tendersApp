@@ -1,5 +1,7 @@
 package com.jankes.tendersApp.tenders;
 
+import java.time.LocalDate;
+
 public class TenderItemDto {
 
     private long id;
@@ -10,7 +12,19 @@ public class TenderItemDto {
     private String office;
     private String remarks;
     private int taskNumber;
+    private String initialBenchmark;
+    private boolean iso50001;
+    private boolean tco;
     private String purchaseForm;
+    private String winner;
+    private String vendor;
+    private String status;
+    private String awardLetterDate;
+    private String comments;
+    private String finalOS;
+    private String finalOffice;
+    private String deliveryTerm;
+    private String benchmarkBid;
 
     public static Builder builder(){
         return new Builder();
@@ -28,6 +42,18 @@ public class TenderItemDto {
         this.remarks = builder.remarks;
         this.taskNumber = builder.taskNumber;
         this.purchaseForm = builder.purchaseForm;
+        this.initialBenchmark = builder.initialBenchmark;
+        this.iso50001 = builder.iso50001;
+        this.tco = builder.tco;
+        this.winner = builder.winner;
+        this.vendor = builder.vendor;
+        this.status = builder.status;
+        this.awardLetterDate = builder.awardLetterDate;
+        this.comments = builder.comments;
+        this.finalOS = builder.finalOS;
+        this.finalOffice = builder.finalOffice;
+        this.deliveryTerm = builder.deliveryTerm;
+        this.benchmarkBid = builder.benchmarkBid;
     }
 
     public long getId() {
@@ -72,8 +98,20 @@ public class TenderItemDto {
         private String os;
         private String office;
         private String remarks;
+        private String initialBenchmark;
+        private boolean iso50001;
+        private boolean tco;
         private int taskNumber;
         private String purchaseForm;
+        private String winner;
+        private String vendor;
+        private String status;
+        private String awardLetterDate;
+        private String comments;
+        private String finalOS;
+        private String finalOffice;
+        private String deliveryTerm;
+        private String benchmarkBid;
 
         public Builder withId(long id){
             this.id = id;
@@ -115,8 +153,68 @@ public class TenderItemDto {
             return this;
         }
 
+        public Builder withInitialBenchmark(String initialBenchmark){
+            this.initialBenchmark = initialBenchmark;
+            return this;
+        }
+
+        public Builder withISO50001(boolean iso50001){
+            this.iso50001 = iso50001;
+            return this;
+        }
+
+        public Builder withTCO(boolean tco){
+            this.tco = tco;
+            return this;
+        }
+
         public Builder withPurchaseForm(String purchaseForm){
             this.purchaseForm = purchaseForm;
+            return this;
+        }
+
+        public Builder withWinner(String winner){
+            this.winner = winner;
+            return this;
+        }
+
+        public Builder withVendor(String vendor){
+            this.vendor = vendor;
+            return this;
+        }
+
+        public Builder withStatus(String status){
+            this.status = status;
+            return this;
+        }
+
+        public Builder withAwardLetterDate(String awardLetterDate){
+            this.awardLetterDate = awardLetterDate;
+            return this;
+        }
+
+        public Builder withComments(String comments){
+            this.comments = comments;
+            return this;
+        }
+
+        public Builder withFinalOS(String finalOS){
+            this.finalOS = finalOS;
+            return this;
+        }
+
+        public Builder withFinalOffice(String finalOffice){
+            this.finalOffice = finalOffice;
+            return this;
+        }
+
+        public Builder withDeliveryTerm(String deliveryTerm){
+            this.deliveryTerm = deliveryTerm;
+            return this;
+        }
+
+        public Builder withBenchmarkBid(String benchmarkBid){
+            this.benchmarkBid = benchmarkBid;
             return this;
         }
 

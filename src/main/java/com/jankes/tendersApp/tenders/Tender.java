@@ -35,17 +35,17 @@ public class Tender {
     private String bidNumber;
     @Enumerated(EnumType.STRING)
     private Status status;
-    private boolean isTimeUp;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate reportDate;
     @Enumerated(EnumType.STRING)
     private TenderBudget budget;
+    private String comments;
     @OneToMany(mappedBy = "tender")
     private List<TenderItem> tenderItems;
-    private String comments;
     @ManyToOne
     @JoinColumn(name = "personInContact_id")
     private PersonInContact personInContact;
+    private boolean isTimeUp;
 
     public Tender() {
         this.isTimeUp = false;
