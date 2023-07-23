@@ -1,5 +1,7 @@
 package com.jankes.tendersApp.tenders;
 
+import org.springframework.lang.Nullable;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -33,6 +35,7 @@ class TenderItem {
     private String winner;
     private String vendor;
     private String status;
+    @Nullable
     private LocalDate awardLetterDate;
     private String comments;
     private String finalOS;

@@ -88,7 +88,55 @@ public class TenderItemDto {
         return taskNumber;
     }
 
+    public String getInitialBenchmark() {
+        return initialBenchmark;
+    }
+
+    public boolean isIso50001() {
+        return iso50001;
+    }
+
+    public boolean isTco() {
+        return tco;
+    }
+
     public String getPurchaseForm(){return purchaseForm;}
+
+    public String getWinner() {
+        return winner;
+    }
+
+    public String getVendor() {
+        return vendor;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public String getAwardLetterDate() {
+        return awardLetterDate;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public String getFinalOS() {
+        return finalOS;
+    }
+
+    public String getFinalOffice() {
+        return finalOffice;
+    }
+
+    public String getDeliveryTerm() {
+        return deliveryTerm;
+    }
+
+    public String getBenchmarkBid() {
+        return benchmarkBid;
+    }
 
     public static class Builder{
         private long id;
