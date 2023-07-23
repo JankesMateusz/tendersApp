@@ -25,6 +25,7 @@ public class Tender {
     @ManyToOne
     @JoinColumn(name = "purchaser_id")
     private Purchaser purchaser;
+    private boolean inReport;
     private String mdpId;
     private String title;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -51,6 +52,7 @@ public class Tender {
         this.isTimeUp = false;
         this.status = Status.PENDING;
         this.tenderItems = new ArrayList<>();
+        this.inReport = false;
     }
 
     public void generateMDPID(){
