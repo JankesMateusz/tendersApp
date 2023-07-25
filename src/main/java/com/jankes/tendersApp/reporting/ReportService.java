@@ -1,32 +1,27 @@
 package com.jankes.tendersApp.reporting;
 
+import com.jankes.tendersApp.contacts.PersonInContactService;
+import com.jankes.tendersApp.purchasers.PurchaserService;
+import com.jankes.tendersApp.tenders.TenderItemService;
 import com.jankes.tendersApp.tenders.TenderService;
+import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.stream.Collectors;
-
+@Service
 public class ReportService {
 
     private final TenderService tenderService;
+    private final TenderItemService tenderItemService;
+    private final PurchaserService purchaserService;
+    private final PersonInContactService personInContactService;
     private final ReportMapper reportMapper;
 
-    public ReportService(TenderService tenderService, ReportMapper reportMapper) {
+    public ReportService(TenderService tenderService, TenderItemService tenderItemService, PurchaserService purchaserService, PersonInContactService personInContactService, ReportMapper reportMapper) {
         this.tenderService = tenderService;
+        this.tenderItemService = tenderItemService;
+        this.purchaserService = purchaserService;
+        this.personInContactService = personInContactService;
         this.reportMapper = reportMapper;
     }
 
-    public List<ReportDto> findReportByReportDate(LocalDate date){
-        return tenderService.findTendersByReportDate(date)
-                .stream()
-                .map(reportMapper::toDto)
-                .collect(Collectors.toList());
-    }
 
-    public List<ReportDto> findReportsBetweenReportDates(LocalDate start, LocalDate end){
-        return tenderService.findTendersBetweenReportDates(start, end)
-                .stream()
-                .map(reportMapper::toDto)
-                .collect(Collectors.toList());
-    }
 }

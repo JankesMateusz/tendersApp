@@ -38,8 +38,12 @@ public class Tender {
     private Status status;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate reportDate;
+    private boolean euFinancing;
     @Enumerated(EnumType.STRING)
     private TenderBudget budget;
+    private String link1;
+    private String link2;
+    private String link3;
     private String comments;
     @OneToMany(mappedBy = "tender")
     private List<TenderItem> tenderItems;
@@ -154,6 +158,22 @@ public class Tender {
         this.reportDate = reportDate;
     }
 
+    public boolean isInReport() {
+        return inReport;
+    }
+
+    public void setInReport(boolean inReport) {
+        this.inReport = inReport;
+    }
+
+    public boolean isEuFinancing() {
+        return euFinancing;
+    }
+
+    public void setEuFinancing(boolean euFinancing) {
+        this.euFinancing = euFinancing;
+    }
+
     public TenderBudget getBudget() {
         return budget;
     }
@@ -181,6 +201,30 @@ public class Tender {
 
     public void setComments(String comments) {
         this.comments = comments;
+    }
+
+    public String getLink1() {
+        return link1;
+    }
+
+    public void setLink1(String link1) {
+        this.link1 = link1;
+    }
+
+    public String getLink2() {
+        return link2;
+    }
+
+    public void setLink2(String link2) {
+        this.link2 = link2;
+    }
+
+    public String getLink3() {
+        return link3;
+    }
+
+    public void setLink3(String link3) {
+        this.link3 = link3;
     }
 
     public PersonInContact getPersonInContact() {

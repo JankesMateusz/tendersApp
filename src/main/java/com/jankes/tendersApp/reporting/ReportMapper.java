@@ -2,10 +2,11 @@ package com.jankes.tendersApp.reporting;
 
 import com.jankes.tendersApp.common.DtoMapper;
 import com.jankes.tendersApp.tenders.Tender;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-
+@Service
 public class ReportMapper implements DtoMapper<ReportDto, Tender> {
 
     @Override

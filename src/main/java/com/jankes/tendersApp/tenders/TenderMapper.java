@@ -22,8 +22,12 @@ public class TenderMapper implements DtoMapper<TenderDto, Tender> {
                 .withPurchaser(entity.getPurchaser())
                 .withStatus(entity.getStatus().name())
                 .withReportDate(format(entity.getReportDate()))
+                .withEuFinancing(entity.isEuFinancing())
                 .withBudget(entity.getBudget().name())
                 .withComments(entity.getComments())
+                .withLink1(entity.getLink1())
+                .withLink2(entity.getLink2())
+                .withLink3(entity.getLink3())
                 .withPersonInContact(entity.getPersonInContact())
                 .build();
     }
@@ -40,8 +44,13 @@ public class TenderMapper implements DtoMapper<TenderDto, Tender> {
         result.setBidNumber(dto.getBidNumber());
         result.setStatus(Tender.Status.valueOf(dto.getStatus()));
         result.setReportDate(LocalDate.parse(dto.getReportDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        result.setEuFinancing(dto.isEuFinancing());
         result.setBudget(TenderBudget.valueOf(dto.getBudget()));
         result.setComments(dto.getComments());
+        result.setLink1(dto.getLink1());
+        result.setLink2(dto.getLink2());
+        result.setLink3(dto.getLink3());
+        
         return result;
     }
 

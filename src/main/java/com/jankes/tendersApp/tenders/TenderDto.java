@@ -19,8 +19,12 @@ public class TenderDto {
     private PurchaserDto purchaser;
     private String status;
     private String reportDate;
+    private boolean euFinancing;
     private String budget;
     private String comments;
+    private String link1;
+    private String link2;
+    private String link3;
     private PersonInContactDto personInContact;
 
     public static Builder builder() {return new Builder();}
@@ -38,8 +42,12 @@ public class TenderDto {
         this.purchaser = builder.purchaser;
         this.status = builder.status;
         this.reportDate = builder.reportDate;
+        this.euFinancing = builder.euFinancing;
         this.budget = builder.budget;
         this.comments = builder.comments;
+        this.link1 = builder.link1;
+        this.link2 = builder.link2;
+        this.link3 = builder.link3;
         this.personInContact = builder.personInContact;
     }
 
@@ -54,8 +62,12 @@ public class TenderDto {
         private PurchaserDto purchaser;
         private String status;
         private String reportDate;
+        private boolean euFinancing;
         private String budget;
         private String comments;
+        private String link1;
+        private String link2;
+        private String link3;
         private PersonInContactDto personInContact;
 
         public Builder withId(long id){
@@ -108,6 +120,11 @@ public class TenderDto {
             return this;
         }
 
+        public Builder withEuFinancing(boolean euFinancing){
+            this.euFinancing = euFinancing;
+            return this;
+        }
+
         public Builder withBudget(String budget){
             this.budget = budget;
             return this;
@@ -115,6 +132,21 @@ public class TenderDto {
 
         public Builder withComments(String remarks){
             this.comments = remarks;
+            return this;
+        }
+
+        public Builder withLink1(String link1){
+            this.link1 = link1;
+            return this;
+        }
+
+        public Builder withLink2(String link2){
+            this.link2 = link2;
+            return this;
+        }
+
+        public Builder withLink3(String link3){
+            this.link3 = link3;
             return this;
         }
 
@@ -160,6 +192,22 @@ public class TenderDto {
 
     public String getReportDate() {
         return reportDate;
+    }
+
+    public boolean isEuFinancing() {
+        return euFinancing;
+    }
+
+    public String getLink1() {
+        return link1;
+    }
+
+    public String getLink2() {
+        return link2;
+    }
+
+    public String getLink3() {
+        return link3;
     }
 
     public String getBudget() {
