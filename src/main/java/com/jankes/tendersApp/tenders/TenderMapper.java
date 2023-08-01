@@ -50,7 +50,7 @@ public class TenderMapper implements DtoMapper<TenderDto, Tender> {
         result.setLink1(dto.getLink1());
         result.setLink2(dto.getLink2());
         result.setLink3(dto.getLink3());
-        
+
         return result;
     }
 
