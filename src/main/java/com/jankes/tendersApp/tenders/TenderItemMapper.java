@@ -65,7 +65,7 @@ public class TenderItemMapper implements DtoMapper<TenderItemDto, TenderItem> {
         return item;
     }
 
-    private String format(LocalDate time){
+    private String format(LocalDate time) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return time.format(formatter);
     }

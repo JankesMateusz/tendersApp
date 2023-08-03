@@ -1,6 +1,6 @@
 package com.jankes.tendersApp.tenders;
 
-import java.time.LocalDate;
+import java.util.Objects;
 
 public class TenderItemDto {
 
@@ -115,7 +115,7 @@ public class TenderItemDto {
     }
 
     public String getAwardLetterDate() {
-        return awardLetterDate;
+        return Objects.requireNonNullElse(this.awardLetterDate, "1999-01-01");
     }
 
     public String getComments() {

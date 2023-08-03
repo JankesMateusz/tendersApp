@@ -35,7 +35,6 @@ class TenderItem {
     private String winner;
     private String vendor;
     private String status;
-    @Nullable
     private LocalDate awardLetterDate;
     private String comments;
     private String finalOS;
